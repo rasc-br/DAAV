@@ -1,0 +1,19 @@
+Install requirement: FLASK
+pip install -U Flask
+
+Install MySQL Server
+https://dev.mysql.com/downloads/installer/
+
+Install requirement: PyMySQL
+pip install PyMySQL
+
+Install requirement: flasgger
+pip install -U setuptools
+pip install flasgger
+
+Install requirement: Python Requests Library
+pip install requests
+
+Install requirement: Python tqdm
+pip install tqdm
+
