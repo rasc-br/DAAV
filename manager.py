@@ -1,18 +1,19 @@
+''' manager.py '''
+
 import os
-import requests
 from urllib.parse import urlparse
-import database as db
-from tqdm import tqdm
 import math
 import json
 import configparser
 import logging as log
+import requests
+from tqdm import tqdm
+import database as db
 
 config = configparser.ConfigParser()
 config.read('config.ini')
 
 log.basicConfig(filename=config['GENERAL']['logDir'] + "appsentinel.log", filemode='a', format='%(asctime)s,%(msecs)d | %(name)s | %(levelname)s | %(funcName)s:%(lineno)d | %(message)s', datefmt='%H:%M:%S', level=log.DEBUG)
-
 
 aptoide_API_endpoint = config['DOWNLOAD']['aptoideAPIEndpoint']
 dir = config['DOWNLOAD']['apkDownloadDir']

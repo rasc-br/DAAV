@@ -1,3 +1,5 @@
+''' database.py '''
+
 import pymysql
 import configparser
 import logging as log
@@ -6,7 +8,6 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 log.basicConfig(filename=config['GENERAL']['logDir'] + "appsentinel.log", filemode='a', format='%(asctime)s,%(msecs)d | %(name)s | %(levelname)s | %(funcName)s:%(lineno)d | %(message)s', datefmt='%H:%M:%S', level=log.DEBUG)
-
 
 def insert_results(md5, tool, results_location, status, details):
     db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
@@ -113,5 +114,20 @@ def get_apk_status(md5):
     db.close()
     return json_data
 
+def register_user(username, password, email):
+    db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
+                         config['MYSQL']['database'])
+    cursor = db.cursor()
+    sql = "INSERT INTO users (username, password, email, status, level, created) VALUES ('%s', '%s', '%s', 'active', '1', NOW())" % (username, password, email)
+    log.debug(sql)
+    try:
+        cursor.execute(sql)
+        db.commit()
+    except:
+        print("AN ERROR OCCURED WHILE INSERTING DATA -> " + sql)
+        log.debug("AN ERROR OCCURED WHILE INSERTING DATA -> " + sql)
+        db.rollback()
+        return False
+    db.close()
 
 

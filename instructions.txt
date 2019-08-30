@@ -1,6 +1,9 @@
 Install requirement: FLASK
 pip install -U Flask
 
+Install requirement: Flask extension SQLAlchemy
+pip install -U Flask-SQLAlchemy
+
 Install MySQL Server
 https://dev.mysql.com/downloads/installer/
 
@@ -16,4 +19,23 @@ pip install requests
 
 Install requirement: Python tqdm
 pip install tqdm
+
+Install requirement: Python JWT Authentication
+pip install PyJWT
+
+Install Python Lint for Flask-SQLAlchemy
+pip install pylint-flask
+pip install pylint_flask_sqlalchemy
+
+For Visual Studio Code:
+File » Preferences » Settings » Extensions » JSON » Edit settings.JSON
+ "python.linting.pylintArgs": ["--load-plugins", "pylint_flask_sqlalchemy"],
+
+Install MySQL for Visual Studio Code
+https://marketplace.visualstudio.com/items?itemName=formulahendry.vscode-mysql
+
+Install MySQL Server and create users (check config.ini)
+
+
+
 

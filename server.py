@@ -1,3 +1,5 @@
+''' server.py '''
+
 from flask import (
     Flask,
     jsonify,
@@ -94,6 +96,22 @@ def apkfeedback(id):
                 return jsonify({'status': False, 'message': results_data[0]['details']}), 500, {'Access-Control-Allow-Origin':'*'}
         else:
             return jsonify({'status': False, 'message': 'APK work was not finished... please come back l8r!'}), 500, {'Access-Control-Allow-Origin':'*'}
+
+@app.route('/login/', methods=('POST',))
+def login():
+    data = request.get_json()
+    user = User.authenticate(**data)
+
+    if not user:
+        return jsonify({ 'message': 'Invalid credentials', 'authenticated': False }), 401
+
+    token = jwt.encode({
+        'sub': user.email,
+        'iat': datetime.utcnow(),
+        'exp': datetime.utcnow() + timedelta(minutes=30)},
+        current_app.config['SECRET_KEY'])
+    return jsonify({ 'token': token.decode('UTF-8') })
+
 
 
 # If we're running in stand alone mode, run the application
