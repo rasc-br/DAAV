@@ -1,49 +1,53 @@
 ''' server.py '''
 
-from flask import (
-    Flask,
-    jsonify,
-    request,
-    Response
-)
-import database as db
-from flasgger import Swagger
-from flasgger.utils import swag_from
 import json
 import logging as log
 import configparser
+from datetime import datetime, timedelta
+from functools import wraps
+from flask import (Flask, jsonify, request, current_app) # Response, Blueprint
+from flasgger import Swagger
+from flasgger.utils import swag_from
+import jwt
+import database as db
+from models import DBALCH, User
 
-config = configparser.ConfigParser()
-config.read('config.ini')
+CONFIG = configparser.ConfigParser()
+CONFIG.read('config.ini')
 
-template = {
-  "swagger": "2.0",
-  "info": {
-    "title": "APK scanner API",
-    "description": "An API that scans APKs looking for security vulnerabilities",
-    "contact": {
-      "responsibleOrganization": "ISCTE - Instituto Universitário de Lisboa",
-      "responsibleDeveloper": "Carlos Serrão",
-      "email": "carlos.serrao@iscte-iul.pt",
-      "url": "istar.iscte-iul.pt",
+TEMPLATE = {
+    "swagger": "2.0",
+    "info": {
+        "title": "APK scanner API",
+        "description": "An API that scans APKs looking for security vulnerabilities",
+        "contact": {
+            "responsibleOrganization": "ISCTE - Instituto Universitário de Lisboa",
+            "responsibleDeveloper": "Carlos Serrão",
+            "email": "carlos.serrao@iscte-iul.pt",
+            "url": "istar.iscte-iul.pt",
+        },
+        "termsOfService": "http://me.com/terms",
+        "version": "0.0.1"
     },
-    "termsOfService": "http://me.com/terms",
-    "version": "0.0.1"
-  },
-  "host": "127.0.0.1:5000",  # overrides localhost:500
-  "basePath": "/",  # base bash for blueprint registration
-  "schemes": [
-    "http",
-    "https"
-  ],
-  "operationId": "getmyData"
+    "host": "127.0.0.1:5000",  # overrides localhost:500
+    "basePath": "/",  # base bash for blueprint registration
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "operationId": "getmyData"
 }
 
 # Create the application instance
 app = Flask(__name__, template_folder="templates")
-Swagger(app, template=template)
+Swagger(app, template=TEMPLATE)
 
-log.basicConfig(filename=config['GENERAL']['logDir'] + "appsentinel.log", filemode='a', format='%(asctime)s,%(msecs)d | %(name)s | %(levelname)s | %(funcName)s:%(lineno)d | %(message)s', datefmt='%H:%M:%S', level=log.DEBUG)
+log.basicConfig(filename=CONFIG['GENERAL']['logDir'] + "appsentinel.log", filemode='a', format='%(asctime)s,%(msecs)d | %(name)s | %(levelname)s | %(funcName)s:%(lineno)d | %(message)s', datefmt='%H:%M:%S', level=log.DEBUG)
+
+app.config.update(
+    TESTING=True,
+    SECRET_KEY='RaphaelAlexandreSperandioCandello'
+)
 
 # Create a URL route in our application for "/"
 # This is purely to see if the server is running, there is currently no website planned
@@ -97,20 +101,63 @@ def apkfeedback(id):
         else:
             return jsonify({'status': False, 'message': 'APK work was not finished... please come back l8r!'}), 500, {'Access-Control-Allow-Origin':'*'}
 
+def token_required(f):
+    @wraps(f)
+    def _verify(*args, **kwargs):
+        auth_headers = request.headers.get('Authorization', '').split()
+
+        invalid_msg = {
+            'message': 'Invalid token. Registeration and / or authentication required',
+            'authenticated': False
+        }
+        expired_msg = {
+            'message': 'Expired token. Reauthentication required.',
+            'authenticated': False
+        }
+
+        if len(auth_headers) != 2:
+            return jsonify(invalid_msg), 401
+
+        try:
+            token = auth_headers[1]
+            data = jwt.decode(token, current_app.config['SECRET_KEY'])
+            user = User.query.filter_by(email=data['sub']).first()
+            if not user:
+                raise RuntimeError('User not found')
+            return f(user, *args, **kwargs)
+        except jwt.ExpiredSignatureError:
+            return jsonify(expired_msg), 401 # 401 is Unauthorized HTTP status code
+        except (jwt.InvalidTokenError, Exception) as e:
+            print(e)
+            return jsonify(invalid_msg), 401
+
+    return _verify
+
+@app.route('/register/', methods=('POST',))
+def register():
+    data = request.get_json()
+    user = User(**data)
+    DBALCH.session.add(user)
+    DBALCH.session.commit()
+    return jsonify(user.to_dict()), 201
+
 @app.route('/login/', methods=('POST',))
 def login():
     data = request.get_json()
     user = User.authenticate(**data)
 
     if not user:
-        return jsonify({ 'message': 'Invalid credentials', 'authenticated': False }), 401
+        return jsonify({'message': 'Invalid credentials', 'authenticated': False}), 401
 
     token = jwt.encode({
         'sub': user.email,
         'iat': datetime.utcnow(),
-        'exp': datetime.utcnow() + timedelta(minutes=30)},
+        'exp': datetime.utcnow() + timedelta(minutes=60)},
         current_app.config['SECRET_KEY'])
-    return jsonify({ 'token': token.decode('UTF-8') })
+    return jsonify({'token': token.decode('UTF-8')})
+
+# Under @app.route... it can be included @token_required
+
 
 
 

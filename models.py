@@ -8,15 +8,18 @@ from flask_sqlalchemy import SQLAlchemy
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
-db = SQLAlchemy()
+DBALCH = SQLAlchemy()
 
-class User(db.Model):
+class User(DBALCH.Model):
     __tablename__ = 'users'
 
-    # id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(45), unique=True, nullable=False)
-    password = db.Column(db.String(45), nullable=False)
-    username = db.Column(db.String(45), nullable=False)
+    # id = DBALCH.Column(DBALCH.Integer, primary_key=True)
+    email = DBALCH.Column(DBALCH.String(45), unique=True, nullable=False)
+    password = DBALCH.Column(DBALCH.String(45), nullable=False)
+    username = DBALCH.Column(DBALCH.String(45), nullable=False)
+    created = DBALCH.Column(DBALCH.DateTime, default=datetime.utcnow)
+    status = DBALCH.Column(DBALCH.String(45), nullable=False)
+    level = DBALCH.Column(DBALCH.String(45), nullable=False)
 
     def __init__(self, email, password):
         self.email = email
