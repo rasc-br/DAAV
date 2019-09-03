@@ -17,14 +17,18 @@
 </template>
 
 <script>
+import { api } from '@/mixins/apiMixin';
+import NotificationTemplate from './Notifications/NotificationTemplate';
+
 export default {
+  mixins: [api],
   data() {
       return {
         username: '',
         password: '',
       }
   },
- methods: {
+  methods: {
         onSubmit: function ()
         {
           if (this.username && this.username.length>1 && this.password && this.password.length>1)
@@ -43,12 +47,30 @@ export default {
         {
           if (this.username && this.username.length>1 && this.password && this.password.length>1)
           {
-            // Promise send for register
+            let userData = {username: this.username, password: this.password};
+            this.registerUser(userData);
 
+            this.$notify({
+              component: NotificationTemplate,
+              icon: "tim-icons icon-check-2",
+              horizontalAlign: 'center',
+              verticalAlign: 'top',
+              type: 'success',
+              message: `User ${this.username} registered successfully!`,
+              timeout: 5000
+            });
           }
           else
           {
-            alert('You must fill username and password');
+             this.$notify({
+              component: NotificationTemplate,
+              icon: "tim-icons icon-alert-circle-exc",
+              horizontalAlign: 'center',
+              verticalAlign: 'top',
+              type: 'warning',
+              message: `You must fill username and password`,
+              timeout: 5000
+            });
           }
         }
   }
