@@ -126,9 +126,17 @@ def register_user(username, password, email):
         return 'SUCCESS'
     except (pymysql.Error, pymysql.Warning) as e:
         print(e)
+        # print(e.args[0])
         log.debug("AN ERROR OCCURED WHILE INSERTING DATA -> " + sql)
         db.rollback()
-        return 'FAIL'
+        if e.args[0] == 1062:
+            return 'This user is already registered'
+        else:
+            return 'Database error'
+        # if e.args[0] == PYMYSQL_DUPLICATE_ERROR:
+        #  return 'Duplicate username'
+        # else:
+        #  return 'FAIL'
     db.close()
 
 

@@ -50,7 +50,7 @@ export default {
           horizontalAlign: 'center',
           verticalAlign: 'top',
           type: 'warning',
-          message: `Database error!`,
+          message: val,
           timeout: 5000
         });
       }

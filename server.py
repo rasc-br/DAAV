@@ -146,11 +146,9 @@ def register():
 
     if register_user == 'SUCCESS':
         print('User ', data.get('username'), ' registered!')
-        return 'SUCCESS'
     else:
         print('Error registering user in database')
-        return 'FAIL'
-
+    return register_user
 
 
 # @app.route('/login/', methods=('POST',))
