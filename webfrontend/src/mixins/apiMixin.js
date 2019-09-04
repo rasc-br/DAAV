@@ -4,9 +4,8 @@ export const api = {
     data() {
         return {
           apiPath: 'http://127.0.0.1:5000',
-          header: {
-            'Content-Type': 'multipart/form-data',
-          }
+          header: {'Content-Type': 'multipart/form-data'},
+          status: '',
         }
     },
     methods:{
@@ -20,14 +19,14 @@ export const api = {
             return now < exp;
         },
         async registerUser(userData){
-            let result = '';
-            axios.post(`${this.apiPath}/register/`, userData, this.header).then((res) => {
-                result = res.data;
+            let self = this;
+            await axios.post(`${this.apiPath}/register/`, userData, this.header).then((res) => {
+                self.status = res.data;
             }).catch((error) => {
-                result = `Register Error: ${error}`;
+                self.status = `Register Error: ${error}`;
             });
 
-            return result;
+            // return result;
         },
         checkLoginUser(userData){
             return axios.post(`${this.apiPath}/login/`, userData)

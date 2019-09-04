@@ -123,11 +123,12 @@ def register_user(username, password, email):
     try:
         cursor.execute(sql)
         db.commit()
-    except:
-        print("AN ERROR OCCURED WHILE INSERTING DATA -> " + sql)
+        return 'SUCCESS'
+    except (pymysql.Error, pymysql.Warning) as e:
+        print(e)
         log.debug("AN ERROR OCCURED WHILE INSERTING DATA -> " + sql)
         db.rollback()
-        return False
+        return 'FAIL'
     db.close()
 
 

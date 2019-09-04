@@ -139,9 +139,19 @@ def apkfeedback(id):
 
 @app.route('/register/', methods=('POST',))
 def register():
-    data = request.data
-    print ('User registered!')
-    return data, 201
+    data = request.get_json(silent=True)
+    print('Received ', data.get('username'), ' and password.')
+
+    register_user = db.register_user(data.get('username'), data.get('password'), 'none')
+
+    if register_user == 'SUCCESS':
+        print('User ', data.get('username'), ' registered!')
+        return 'SUCCESS'
+    else:
+        print('Error registering user in database')
+        return 'FAIL'
+
+
 
 # @app.route('/login/', methods=('POST',))
 # def login():

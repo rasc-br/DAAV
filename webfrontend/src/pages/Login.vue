@@ -28,8 +28,36 @@ export default {
         password: '',
       }
   },
+  watch: {
+    status: function (val) {
+      if (val == 'SUCCESS')
+      {
+        this.$notify({
+          component: NotificationTemplate,
+          icon: "tim-icons icon-check-2",
+          horizontalAlign: 'center',
+          verticalAlign: 'top',
+          type: 'success',
+          message: `User ${this.username} registered successfully!`,
+          timeout: 5000
+        });              
+      }
+      else if (val!='')
+      {
+        this.$notify({
+          component: NotificationTemplate,
+          icon: "tim-icons icon-alert-circle-exc",
+          horizontalAlign: 'center',
+          verticalAlign: 'top',
+          type: 'warning',
+          message: `Database error!`,
+          timeout: 5000
+        });
+      }
+    },
+  },
   methods: {
-        onSubmit: function ()
+        onSubmit()
         {
           if (this.username && this.username.length>1 && this.password && this.password.length>1)
           {
@@ -43,22 +71,13 @@ export default {
             alert('You must fill username and password');
           }
         },
-        register: function ()
+        register()
         {
           if (this.username && this.username.length>1 && this.password && this.password.length>1)
           {
             let userData = {username: this.username, password: this.password};
             this.registerUser(userData);
-
-            this.$notify({
-              component: NotificationTemplate,
-              icon: "tim-icons icon-check-2",
-              horizontalAlign: 'center',
-              verticalAlign: 'top',
-              type: 'success',
-              message: `User ${this.username} registered successfully!`,
-              timeout: 5000
-            });
+            this.status = '';
           }
           else
           {
