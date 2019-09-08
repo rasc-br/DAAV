@@ -32,7 +32,7 @@
 import TopNavbar from "./TopNavbar.vue";
 import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./Content.vue";
-import MobileMenu from "./MobileMenu";
+// import MobileMenu from "./MobileMenu";
 import { api } from '@/mixins/apiMixin';
 
 export default {
@@ -41,7 +41,7 @@ export default {
     TopNavbar,
     ContentFooter,
     DashboardContent,
-    MobileMenu
+    // MobileMenu
   },
   methods: {
     toggleSidebar() {
@@ -51,11 +51,17 @@ export default {
     },
   },
   beforeMount() {
-    // Validade Token
-    if (!this.checkToken())
+    if (!this.checkToken(sessionStorage.getItem('token')))
+    {
+      window.location.href = `${window.location.origin}/#/`;
+    }
+  },
+  activated() {
+    if (!this.checkToken(sessionStorage.getItem('token')))
     {
       window.location.href = `${window.location.origin}/#/`;
     }
   }
 };
 </script>
+ 

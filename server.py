@@ -11,7 +11,6 @@ from flasgger import Swagger
 from flasgger.utils import swag_from
 import jwt
 import database as db
-# from models import DBALCH, User
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read('config.ini')
@@ -151,25 +150,28 @@ def register():
     return register_user
 
 
-# @app.route('/login/', methods=('POST',))
-# def login():
-#     data = request.get_json()
-#     user = User.authenticate(**data)
+@app.route('/login/', methods=('POST',))
+def login():
+    data = request.get_json(silent=True)
+    print('Check ', data.get('username'), ' login.')
 
-#     if not user:
-#         return jsonify({'message': 'Invalid credentials', 'authenticated': False}), 401
+    login_result = db.login_user(data.get('username'), data.get('password'))
 
-#     token = jwt.encode({
-#         'sub': user.email,
-#         'iat': datetime.utcnow(),
-#         'exp': datetime.utcnow() + timedelta(minutes=60)},
-#         current_app.config['SECRET_KEY'])
-#     return jsonify({'token': token.decode('UTF-8')})
+    if (login_result == 'FAIL'):
+        return login_result
+    else:
+        token = jwt.encode({
+            'sub': login_result['username'],
+            'iat': datetime.utcnow(),
+            'exp': datetime.utcnow() + timedelta(minutes=60)},
+            current_app.config['SECRET_KEY'])
+        return jsonify({'token': token.decode('UTF-8')})
+
+    # if not user:
+    #     return jsonify({'message': 'Invalid credentials', 'authenticated': False}), 401
+
 
 # Under @app.route... it can be included @token_required
-
-
-
 
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':

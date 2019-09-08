@@ -40,17 +40,25 @@
 
     },
     mounted() {
-      if (!this.checkToken())
-      {
-        window.location.href = `${window.location.origin}/#/`;
-      }
       // Get Profile
       // if (result.avatar)
       // {
         // this.profile.avatar = result.avatar;
       // }
       
-    }
+    },
+    beforeMount() {
+      if (!this.checkToken(sessionStorage.getItem('token')))
+      {
+        window.location.href = `${window.location.origin}/#/`;
+      }
+    },
+    activated() {
+      if (!this.checkToken(sessionStorage.getItem('token')))
+      {
+        window.location.href = `${window.location.origin}/#/`;
+      }
+    }    
   }
 </script>
 <style>

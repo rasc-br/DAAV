@@ -1,8 +1,10 @@
 ''' database.py '''
 
-import pymysql
 import configparser
 import logging as log
+import json
+import pymysql
+from werkzeug.security import generate_password_hash, check_password_hash
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -118,7 +120,8 @@ def register_user(username, password, email):
     db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
                          config['MYSQL']['database'])
     cursor = db.cursor()
-    sql = "INSERT INTO users (username, password, email, status, level, created) VALUES ('%s', '%s', '%s', 'active', '1', NOW())" % (username, password, email)
+    hashed_password = generate_password_hash(password, method='sha256')
+    sql = "INSERT INTO users (username, password, email, status, level, created) VALUES ('%s', '%s', '%s', 'active', '1', NOW())" % (username, hashed_password, email)
     log.debug(sql)
     try:
         cursor.execute(sql)
@@ -133,10 +136,39 @@ def register_user(username, password, email):
             return 'This user is already registered'
         else:
             return 'Database error'
-        # if e.args[0] == PYMYSQL_DUPLICATE_ERROR:
-        #  return 'Duplicate username'
-        # else:
-        #  return 'FAIL'
     db.close()
 
-
+def login_user(username, password):
+    db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
+                         config['MYSQL']['database'])
+    cursor = db.cursor()
+    sql = "SELECT * FROM users WHERE username = '" + username + "' ORDER BY id DESC LIMIT 1"
+    log.debug(sql)
+    try:
+        cursor.execute(sql)
+        row_headers = [x[0] for x in cursor.description]
+        result = cursor.fetchone()
+        if (result):
+            dict_data = dict(zip(row_headers, result))
+            # json_data = json.dumps(dict_data)
+            # json_data contains all user information collected from db
+            db.close()
+            passord_ok = check_password_hash((dict_data['password']), password)
+            if passord_ok:
+                print("Username and Password OK!")
+                return dict_data
+            else:
+                print("Login failed")
+                return 'FAIL'
+        else:
+            return 'FAIL'
+    except (pymysql.Error, pymysql.Warning) as e:
+        print(e)
+        # print(e.args[0])
+        log.debug("AN ERROR OCCURED WHILE INSERTING DATA -> " + sql)
+        db.rollback()
+        if e.args[0] == 1062:
+            return 'This user is already registered'
+        else:
+            return 'Database error'
+    db.close()

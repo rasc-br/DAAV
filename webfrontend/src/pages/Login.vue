@@ -55,20 +55,58 @@ export default {
         });
       }
     },
+    token: function (val) {
+      if (val && val!='FAIL')
+      {
+        this.$notify({
+          component: NotificationTemplate,
+          icon: "tim-icons icon-check-2",
+          horizontalAlign: 'center',
+          verticalAlign: 'top',
+          type: 'success',
+          message: `Login sucessfull!`,
+          timeout: 5000
+        });
+        sessionStorage.setItem('token', val);
+        sessionStorage.setItem('username', this.username);
+        window.location.href = `${window.location.origin}/#/main/dashboard`;                     
+      }
+      else if (val)
+      {
+        this.$notify({
+          component: NotificationTemplate,
+          icon: "tim-icons icon-alert-circle-exc",
+          horizontalAlign: 'center',
+          verticalAlign: 'top',
+          type: 'warning',
+          message: 'Wrong username and/or password',
+          timeout: 5000
+        });
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('username');  
+      }
+    },    
   },
   methods: {
         onSubmit()
         {
           if (this.username && this.username.length>1 && this.password && this.password.length>1)
           {
-            // Promise send for authentication
-            sessionStorage.setItem('token', '1234');
-            sessionStorage.setItem('username', this.username);
-            window.location.href = `${window.location.origin}/#/main/dashboard`;
+            let userData = {username: this.username, password: this.password};
+            this.loginUser(userData);
+            this.token = '';
           }
           else
           {
-            alert('You must fill username and password');
+            this.$notify({
+              component: NotificationTemplate,
+              icon: "tim-icons icon-alert-circle-exc",
+              horizontalAlign: 'center',
+              verticalAlign: 'top',
+              type: 'warning',
+              message: 'You must fill username and password',
+              timeout: 5000
+            });
           }
         },
         register()
