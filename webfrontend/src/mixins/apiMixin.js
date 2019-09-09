@@ -8,6 +8,7 @@ export const api = {
           status: '',
           token: '',
           tempResult: '',
+          loginData: '',
         }
     },
     methods:{
@@ -30,10 +31,18 @@ export const api = {
         },
         async loginUser(userData){
             let self = this;
+            this.loginData='';
             await axios.post(`${this.apiPath}/login/`, userData, this.header).then((res) => {
                 if (res.data.token)
                 {
                     self.token = res.data.token;
+                    // this.$userProfileData = res.data;
+                    Object.keys(res.data).forEach((key) => {
+                        if (res.data[key] && res.data[key] != 'none')
+                        {
+                            this.$userProfileData[key] = res.data[key];
+                        }
+                    });
                 }
                 else
                 {

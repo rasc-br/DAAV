@@ -9,7 +9,7 @@
       <div class="block block-four"></div>
       <a href="#">
         <input type="file" id="chooseFile" ref="chooseFile" style="display: none" @change="onFileChange">
-        <img class="avatar" :src="avatar" @click="selectNewAvatar">
+        <img class="avatar" :src="$userProfileData.avatar" @click="selectNewAvatar">
         <h5 class="title">{{user.firstName}} {{user.lastName}}</h5>
       </a>
       <p class="description">
@@ -38,9 +38,7 @@ export default {
   },
   data(){
     return {
-      avatarFile: '',
       imgEditStatus: '',
-      avatar: this.user.avatar,
     }
   },
   watch: {
@@ -80,9 +78,18 @@ export default {
       let files = e.target.files || e.dataTransfer.files;
       if (!files.length)
         return;
-      this.avatarFile = files[0];
+      let avatarFile = files[0];
 
-      let profileData = {username: this.user.username, img: this.avatarFile};
+      const toBase64 = file => new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+      });
+
+      let fileBase64 = await toBase64(avatarFile);
+
+      let profileData = {username: this.user.username, img: fileBase64, imgtype: avatarFile.type};
       this.imgEditStatus = '';
 
       await this.editProfile(profileData);
@@ -90,11 +97,7 @@ export default {
 
       if (this.imgEditStatus == 'SUCCESS')
       {
-        let reader  = new FileReader();
-        reader.onloadend = function () {
-         self.avatar = reader.result;
-        }
-        reader.readAsDataURL(this.avatarFile);
+        self.$userProfileData.avatar = fileBase64;
       }
     },
   }

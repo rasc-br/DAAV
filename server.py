@@ -4,13 +4,14 @@ import json
 import logging as log
 import configparser
 from datetime import datetime, timedelta
-from functools import wraps
+# from functools import wraps
 from flask import (Flask, jsonify, request, current_app) # Response, Blueprint
 from flask_cors import CORS
 from flasgger import Swagger
 from flasgger.utils import swag_from
 import jwt
 import database as db
+import base64
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read('config.ini')
@@ -165,7 +166,19 @@ def login():
             'iat': datetime.utcnow(),
             'exp': datetime.utcnow() + timedelta(minutes=60)},
             current_app.config['SECRET_KEY'])
-        return jsonify({'token': token.decode('UTF-8')})
+        return jsonify({'token': token.decode('UTF-8'),
+                        'username': login_result['username'],
+                        'email': login_result['email'],
+                        'firstname': login_result['firstname'],
+                        'lastname': login_result['lastname'],
+                        'address': login_result['address'],
+                        'city': login_result['city'],
+                        'country': login_result['country'],
+                        'about': login_result['about'],
+                        'type': login_result['level'],
+                        'imgtype': login_result['imgtype'],
+                        'avatar': login_result['profileimg']
+                       })
 
     # if not user:
     #     return jsonify({'message': 'Invalid credentials', 'authenticated': False}), 401
@@ -175,7 +188,7 @@ def login():
 def edit_profile():
     data = request.get_json(silent=True)
 
-    edited_profile = db.edit_profile(data.get('username'), data.get('img'))
+    edited_profile = db.edit_profile(data.get('username'), data.get('img'), data.get('imgtype'))
 
     if edited_profile == 'SUCCESS':
         print('Profile ', data.get('username'), ' edited!')

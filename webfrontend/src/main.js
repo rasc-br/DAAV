@@ -13,8 +13,33 @@ Vue.use(BlackDashboard);
 Vue.use(VueRouter);
 Vue.use(RouterPrefetch);
 
+let globalData = new Vue({
+  data: { 
+    $userProfileData: {
+      email: 'songoku@universe7.com',
+      username: 'sonGokuu',
+      firstName: 'Son',
+      lastName: 'Goku',
+      address: 'Grandpa Gohan House',
+      city: 'Mount Paozu',
+      country: 'Universe 7',
+      about: 'Osu, ora Gokuu',
+      postalcode: '7777-777',
+      avatar: 'img/goku.jpg',
+      type: 'Simple User',
+      imgtype: 'image/jpg'
+    },
+   }
+});
+
 Vue.mixin({
   // Global mixin, everything in here will be available to all components
+  computed: {
+    $userProfileData: {
+      get: function () { return globalData.$data.$userProfileData },
+      set: function (newUserProfileData) { globalData.$data.$userProfileData = newUserProfileData; }
+    },    
+  }
 })
 
 /* eslint-disable no-new */

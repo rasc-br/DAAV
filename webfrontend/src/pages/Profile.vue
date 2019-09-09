@@ -1,11 +1,11 @@
 <template>
   <div class="row">
     <div class="col-md-8">
-      <edit-profile-form :model="profile">
+      <edit-profile-form :model="$userProfileData">
       </edit-profile-form>
     </div>
     <div class="col-md-4">
-      <user-card :user="profile"></user-card>
+      <user-card :user="$userProfileData"></user-card>
     </div>
   </div>
 </template>
@@ -20,31 +20,14 @@
       EditProfileForm,
       UserCard
     },
-    data() {
-      return {
-        profile: {
-          email: 'songoku@universe7.com',
-          username: sessionStorage.getItem('username'),
-          firstName: 'Son',
-          lastName: 'Goku',
-          address: 'Grandpa Gohan House',
-          city: 'Mount Paozu',
-          country: 'Universe 7',
-          about: 'Osu, ora Gokuu',
-          avatar: 'img/goku.jpg',
-          type: 'Simple User'
-        },
+    methods: {
+      getLoginData()
+      {
+
       }
     },
-    methods: {
-
-    },
     mounted() {
-      // Get Profile
-      // if (result.avatar)
-      // {
-        // this.profile.avatar = result.avatar;
-      // }
+      this.getLoginData();
       
     },
     beforeMount() {
