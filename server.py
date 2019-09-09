@@ -177,6 +177,7 @@ def login():
                         'about': login_result['about'],
                         'type': login_result['level'],
                         'imgtype': login_result['imgtype'],
+                        'postalcode': login_result['postalcode'],
                         'avatar': login_result['profileimg']
                        })
 
@@ -188,7 +189,7 @@ def login():
 def edit_profile():
     data = request.get_json(silent=True)
 
-    edited_profile = db.edit_profile(data.get('username'), data.get('img'), data.get('imgtype'))
+    edited_profile = db.edit_profile(data)
 
     if edited_profile == 'SUCCESS':
         print('Profile ', data.get('username'), ' edited!')

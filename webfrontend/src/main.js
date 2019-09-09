@@ -18,8 +18,8 @@ let globalData = new Vue({
     $userProfileData: {
       email: 'songoku@universe7.com',
       username: 'sonGokuu',
-      firstName: 'Son',
-      lastName: 'Goku',
+      firstname: 'Son',
+      lastname: 'Goku',
       address: 'Grandpa Gohan House',
       city: 'Mount Paozu',
       country: 'Universe 7',

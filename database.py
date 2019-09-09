@@ -173,11 +173,16 @@ def login_user(username, password):
             return 'Database error'
     db.close()
 
-def edit_profile(username, img, imgtype):
+def edit_profile(data):
     db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
                          config['MYSQL']['database'])
     cursor = db.cursor()
-    sql = "UPDATE users SET profileimg = '%s', imgtype = '%s'  WHERE username = '%s'" % (img, imgtype, username)
+    sql = """UPDATE users SET profileimg = '%s', imgtype = '%s', email = '%s', firstname = '%s', lastname = '%s', address = '%s',
+             city = '%s', country = '%s', postalcode = '%s', about = '%s'
+             WHERE username = '%s'
+             """ % (data.get('avatar'), data.get('imgtype'), data.get('email'), data.get('firstname'), data.get('lastname'), data.get('address'),
+                    data.get('city'), data.get('country'), data.get('postalcode'), data.get('about'),
+                    data.get('username'))
 
     try:
         cursor.execute(sql)

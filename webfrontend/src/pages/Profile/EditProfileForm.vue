@@ -4,7 +4,8 @@
     <div class="row">
       <div class="col-md-3 pr-md-1">
         <base-input label="Username"
-                    v-model="model.username">
+                    v-model="model.username"
+                    disabled>
         </base-input>
       </div>
       <div class="col-md-5 px-md-1">
@@ -17,12 +18,12 @@
     <div class="row">
       <div class="col-md-6 pr-md-1">
         <base-input label="First Name"
-                  v-model="model.firstName">
+                  v-model="model.firstname">
         </base-input>
       </div>
       <div class="col-md-6 pl-md-1">
         <base-input label="Last Name"
-                  v-model="model.lastName">
+                  v-model="model.lastname">
         </base-input>
       </div>
     </div>
@@ -45,7 +46,8 @@
         </base-input>
       </div>
       <div class="col-md-4 pl-md-1">
-        <base-input label="Postal Code">
+        <base-input label="Postal Code"
+                    v-model="model.postalcode">
         </base-input>
       </div>
     </div>
@@ -65,7 +67,11 @@
   </card>
 </template>
 <script>
+  import { api } from '@/mixins/apiMixin';
+  import NotificationTemplate from '@/pages//Notifications/NotificationTemplate';
+
   export default {
+    mixins: [api],    
     props: {
       model: {
         type: Object,
@@ -74,10 +80,44 @@
         }
       }
     },
+    data(){
+      return {
+        profileStatus: '',
+      }
+    },        
+  watch: {
+    profileStatus: function (val) {
+      if (val == 'SUCCESS')
+      {
+        this.$notify({
+          component: NotificationTemplate,
+          icon: "tim-icons icon-check-2",
+          horizontalAlign: 'center',
+          verticalAlign: 'top',
+          type: 'success',
+          message: `Profile edited successfully!`,
+          timeout: 5000
+        });              
+      }
+      else if (val!='')
+      {
+        this.$notify({
+          component: NotificationTemplate,
+          icon: "tim-icons icon-alert-circle-exc",
+          horizontalAlign: 'center',
+          verticalAlign: 'top',
+          type: 'warning',
+          message: `Error editing profile`,
+          timeout: 5000
+        });
+      }
+    },
+  },      
     methods: {
-      saveProfile(){
-        // Edit Profile
-        alert (`Profile ${this.model.username} saved!`);
+      async saveProfile(){
+        this.profileStatus = '';
+        await this.editProfile(this.$userProfileData);
+        this.profileStatus = this.tempResult;
       },
     }
   }

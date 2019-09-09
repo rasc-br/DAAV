@@ -20,16 +20,6 @@
       EditProfileForm,
       UserCard
     },
-    methods: {
-      getLoginData()
-      {
-
-      }
-    },
-    mounted() {
-      this.getLoginData();
-      
-    },
     beforeMount() {
       if (!this.checkToken(sessionStorage.getItem('token')))
       {

@@ -10,7 +10,7 @@
       <a href="#">
         <input type="file" id="chooseFile" ref="chooseFile" style="display: none" @change="onFileChange">
         <img class="avatar" :src="$userProfileData.avatar" @click="selectNewAvatar">
-        <h5 class="title">{{user.firstName}} {{user.lastName}}</h5>
+        <h5 class="title">{{user.firstname}} {{user.lastname}}</h5>
       </a>
       <p class="description">
         {{user.type}}
@@ -74,7 +74,7 @@ export default {
         document.getElementById("chooseFile").click();
     },
     async onFileChange(e){
-      let self = this;
+      // let self = this;
       let files = e.target.files || e.dataTransfer.files;
       if (!files.length)
         return;
@@ -89,16 +89,18 @@ export default {
 
       let fileBase64 = await toBase64(avatarFile);
 
-      let profileData = {username: this.user.username, img: fileBase64, imgtype: avatarFile.type};
+      // let profileData = {username: this.user.username, img: fileBase64, imgtype: avatarFile.type};
       this.imgEditStatus = '';
 
-      await this.editProfile(profileData);
+      this.$userProfileData.avatar = fileBase64;
+
+      await this.editProfile(this.$userProfileData);
       this.imgEditStatus = this.tempResult;
 
-      if (this.imgEditStatus == 'SUCCESS')
-      {
-        self.$userProfileData.avatar = fileBase64;
-      }
+      // if (this.imgEditStatus == 'SUCCESS')
+      // {
+      //   self.$userProfileData.avatar = fileBase64;
+      // }
     },
   }
 }
