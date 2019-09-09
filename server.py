@@ -171,6 +171,19 @@ def login():
     #     return jsonify({'message': 'Invalid credentials', 'authenticated': False}), 401
 
 
+@app.route('/edit_profile/', methods=('POST',))
+def edit_profile():
+    data = request.get_json(silent=True)
+
+    edited_profile = db.edit_profile(data.get('username'), data.get('img'))
+
+    if edited_profile == 'SUCCESS':
+        print('Profile ', data.get('username'), ' edited!')
+    else:
+        print('Error editing profile in database')
+    return edited_profile
+
+
 # Under @app.route... it can be included @token_required
 
 # If we're running in stand alone mode, run the application

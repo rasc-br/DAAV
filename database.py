@@ -172,3 +172,20 @@ def login_user(username, password):
         else:
             return 'Database error'
     db.close()
+
+def edit_profile(username, img):
+    db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
+                         config['MYSQL']['database'])
+    cursor = db.cursor()
+    # sql = "UPDATE users SET (username, password, email, status, level, created) VALUES ('%s', '%s', '%s', 'active', '1', NOW())" % (username, hashed_password, email)
+    sql = "UPDATE users SET profileimg = '%s' WHERE username = '%s'" % (img, username)
+
+    try:
+        cursor.execute(sql)
+        db.commit()
+        return 'SUCCESS'
+    except (pymysql.Error, pymysql.Warning) as e:
+        print(e)
+        db.rollback()
+        return 'Database error'
+    db.close()

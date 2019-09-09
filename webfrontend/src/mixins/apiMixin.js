@@ -7,6 +7,7 @@ export const api = {
           header: {'Content-Type': 'multipart/form-data'},
           status: '',
           token: '',
+          tempResult: '',
         }
     },
     methods:{
@@ -39,12 +40,19 @@ export const api = {
                     self.token = res.data;
                 }
             }).catch((error) => {
-                return self.token = error;
+               self.token = error;
             });
         },       
         checkLoginUser(userData){
             return axios.post(`${this.apiPath}/login/`, userData)
         },
+        async editProfile(profileData){
+            await axios.post(`${this.apiPath}/edit_profile/`, profileData, this.header).then((res) => {
+                this.tempResult = res.data;
+            }).catch((error) => {
+                this.tempResult = error;
+            });
+        },        
         saveUser(){
             return 'User saved';
         }
