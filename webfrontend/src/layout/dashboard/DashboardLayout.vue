@@ -3,7 +3,7 @@
     <side-bar>
       <template slot="links">
         <sidebar-link to="/main/dashboard" :name="$t('sidebar.dashboard')" icon="tim-icons icon-chart-pie-36"/>
-        <sidebar-link to="/main/uploadApk" :name="'Upload APK'" icon="tim-icons icon-cloud-upload-94"/>
+        <sidebar-link to="/main/upload" :name="'Upload APK'" icon="tim-icons icon-cloud-upload-94"/>
         <sidebar-link to="/main/reports" :name="'Reports'" icon="tim-icons icon-single-copy-04"/>
         <!-- <sidebar-link to="/dashboard" :name="$t('sidebar.dashboard')" icon="tim-icons icon-chart-pie-36"/>
         <sidebar-link to="/icons" :name="$t('sidebar.icons')" icon="tim-icons icon-atom"/>

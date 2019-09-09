@@ -105,38 +105,6 @@ def apkfeedback(id):
         else:
             return jsonify({'status': False, 'message': 'APK work was not finished... please come back l8r!'}), 500, {'Access-Control-Allow-Origin':'*'}
 
-# def token_required(f):
-#     @wraps(f)
-#     def _verify(*args, **kwargs):
-#         auth_headers = request.headers.get('Authorization', '').split()
-
-#         invalid_msg = {
-#             'message': 'Invalid token. Registeration and / or authentication required',
-#             'authenticated': False
-#         }
-#         expired_msg = {
-#             'message': 'Expired token. Reauthentication required.',
-#             'authenticated': False
-#         }
-
-#         if len(auth_headers) != 2:
-#             return jsonify(invalid_msg), 401
-
-#         try:
-#             token = auth_headers[1]
-#             data = jwt.decode(token, current_app.config['SECRET_KEY'])
-#             user = User.query.filter_by(email=data['sub']).first()
-#             if not user:
-#                 raise RuntimeError('User not found')
-#             return f(user, *args, **kwargs)
-#         except jwt.ExpiredSignatureError:
-#             return jsonify(expired_msg), 401 # 401 is Unauthorized HTTP status code
-#         except (jwt.InvalidTokenError, Exception) as e:
-#             print(e)
-#             return jsonify(invalid_msg), 401
-
-#     return _verify
-
 @app.route('/register/', methods=('POST',))
 def register():
     data = request.get_json(silent=True)
@@ -181,10 +149,6 @@ def login():
                         'avatar': login_result['profileimg']
                        })
 
-    # if not user:
-    #     return jsonify({'message': 'Invalid credentials', 'authenticated': False}), 401
-
-
 @app.route('/edit_profile/', methods=('POST',))
 def edit_profile():
     data = request.get_json(silent=True)
@@ -196,9 +160,6 @@ def edit_profile():
     else:
         print('Error editing profile in database')
     return edited_profile
-
-
-# Under @app.route... it can be included @token_required
 
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':

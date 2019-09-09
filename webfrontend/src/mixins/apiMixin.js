@@ -40,7 +40,15 @@ export const api = {
                     Object.keys(res.data).forEach((key) => {
                         if (res.data[key] && res.data[key] != 'none')
                         {
-                            this.$userProfileData[key] = res.data[key];
+                            if (key!='type')
+                            {
+                                this.$userProfileData[key] = res.data[key];
+                            }
+                            else
+                            {
+                                this.$userProfileData[key] = res.data[key]==1 ? 'Simple User' : 'Experienced User';
+                                this.$userProfileData[key] = res.data[key]==100 ? 'God' : this.$userProfileData[key];
+                            }
                         }
                     });
                 }
@@ -62,8 +70,5 @@ export const api = {
                 this.tempResult = error;
             });
         },        
-        saveUser(){
-            return 'User saved';
-        }
     }
 }

@@ -6,11 +6,12 @@ import Login from "@/pages/Login.vue";
 // Admin pages
 const Dashboard = () => import(/* webpackChunkName: "dashboard" */"@/pages/Dashboard.vue");
 const Profile = () => import(/* webpackChunkName: "common" */ "@/pages/Profile.vue");
-const Notifications = () => import(/* webpackChunkName: "common" */"@/pages/Notifications.vue");
+// const Notifications = () => import(/* webpackChunkName: "common" */"@/pages/Notifications.vue");
 const Icons = () => import(/* webpackChunkName: "common" */ "@/pages/Icons.vue");
-const Maps = () => import(/* webpackChunkName: "common" */ "@/pages/Maps.vue");
-const Typography = () => import(/* webpackChunkName: "common" */ "@/pages/Typography.vue");
-const TableList = () => import(/* webpackChunkName: "common" */ "@/pages/TableList.vue");
+// const Maps = () => import(/* webpackChunkName: "common" */ "@/pages/Maps.vue");
+// const Typography = () => import(/* webpackChunkName: "common" */ "@/pages/Typography.vue");
+// const TableList = () => import(/* webpackChunkName: "common" */ "@/pages/TableList.vue");
+const Upload = () => import(/* webpackChunkName: "common" */ "@/pages/Upload.vue");
 
 const routes = [
   {
@@ -38,6 +39,11 @@ const routes = [
         name: "icons",
         component: Icons
       },
+      {
+        path: "upload",
+        name: "upload",
+        component: Upload
+      },      
     ]
   },
   { path: "*", component: NotFound }
