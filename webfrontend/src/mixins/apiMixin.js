@@ -69,6 +69,14 @@ export const api = {
             }).catch((error) => {
                 this.tempResult = error;
             });
-        },        
+        },   
+        analizeMD5(choosenMD5){
+            let apk = {'md5':choosenMD5};
+            return axios.post(`${this.apiPath}/apkscan`, apk, this.header).then((res) => {
+                this.tempResult = {'message':res.data.message,'status':'SUCCESS'};
+            }).catch((error) => {
+                this.tempResult = {'message':error.response.data.message,'status':'FAIL'};
+            });
+        },             
     }
 }

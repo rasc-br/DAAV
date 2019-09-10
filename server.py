@@ -64,21 +64,21 @@ def home():
 @swag_from('./docs/apkscan.yml')
 def apkscan():
     log.debug("APKSCAN REQUEST RECEIVED")
-    data = request.values
+    data = request.get_json(silent=True)
 
     # check if an MD5 has been passed
     if "md5" not in data:
-        return jsonify({'status': False, 'message': 'Hey...! Where is my MD5???'}), 200, {'Access-Control-Allow-Origin':'*'}
+        return jsonify({'status': False, 'message': 'Hey...! Where is my MD5???'}), 400, {'Access-Control-Allow-Origin':'*'}
     else:
         md5Apk = data["md5"]
         log.debug("APK MD5 = " + md5Apk)
         # 1. add the apk to scan to the database
         if db.apk_id_exists(md5Apk, 'apkresults'):
             return jsonify({'status': False,
-                            'message': 'That APK was previously processed and exists on the results database. Please check the results using the appropriate API call!'}), 200, {'Access-Control-Allow-Origin':'*'}
+                            'message': 'That APK was previously processed and exists on the results database. Please check the results using the appropriate API call!'}), 400, {'Access-Control-Allow-Origin':'*'}
         else:
             if db.apk_id_exists(md5Apk, 'apk2scan'):
-                return jsonify({'status': False, 'message': 'That APK is already in the pipeline to be processed... wait for the results!'}), 200, {'Access-Control-Allow-Origin':'*'}
+                return jsonify({'status': False, 'message': 'That APK is already in the pipeline to be processed... wait for the results!'}), 400, {'Access-Control-Allow-Origin':'*'}
             else:
                 db.insert_new_apk2scan(md5Apk)
                 return jsonify({'status': True, 'message': 'APK was passed to the scanning engine... please hold on!'}), 200, {'Access-Control-Allow-Origin':'*'}

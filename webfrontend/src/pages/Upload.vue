@@ -28,7 +28,6 @@
         <div class="col-12">
           <div class="font-icon-detail">
             <div class="col-md-6 pr-md-1" style="text-align: center; display: inline-block;">
-              <!-- <input type="file" id="chooseFile" ref="chooseFile" v-on:change="handleFileUpload()"/> -->
                <base-input label="Insert MD5"
                     v-model="choosenMD5">
                </base-input>
@@ -43,6 +42,7 @@
 </template>
 <script>
 import { api } from '@/mixins/apiMixin';
+import NotificationTemplate from './Notifications/NotificationTemplate';
 
 export default {
   mixins: [api],  
@@ -50,8 +50,37 @@ export default {
     return {
       choosenFile: '',
       choosenMD5: '',
+      analizeReturn: '',
     }
   },         
+  watch: {
+    analizeReturn: function (val) {
+      if (val.status == 'SUCCESS')
+      {
+        this.$notify({
+          component: NotificationTemplate,
+          icon: "tim-icons icon-check-2",
+          horizontalAlign: 'center',
+          verticalAlign: 'top',
+          type: 'success',
+          message: val.message,
+          timeout: 5000
+        });              
+      }
+      else if (val!='')
+      {
+        this.$notify({
+          component: NotificationTemplate,
+          icon: "tim-icons icon-alert-circle-exc",
+          horizontalAlign: 'center',
+          verticalAlign: 'top',
+          type: 'warning',
+          message: val.message,
+          timeout: 5000
+        });
+      }
+    },
+  },     
   methods: {
     chooseFile(){
       this.$refs.chooseFile.click();
@@ -62,8 +91,41 @@ export default {
     goAnalyzeFile(){
       //none
     },
-    goAnalyzeMD5(){
-      //none
+    async goAnalyzeMD5(){
+      this.analizeReturn = '';
+      if (this.choosenMD5)
+      {
+        let regex = new RegExp("^[a-f0-9]{32}$");
+        if (regex.test(this.choosenMD5))
+        {
+          await this.analizeMD5(this.choosenMD5);
+          this.analizeReturn = this.tempResult;
+        }
+        else
+        {
+        this.$notify({
+          component: NotificationTemplate,
+          icon: "tim-icons icon-alert-circle-exc",
+          horizontalAlign: 'center',
+          verticalAlign: 'top',
+          type: 'warning',
+          message: 'This is not a valid MD5',
+          timeout: 5000
+        });          
+        }
+      }
+      else
+      {
+        this.$notify({
+          component: NotificationTemplate,
+          icon: "tim-icons icon-alert-circle-exc",
+          horizontalAlign: 'center',
+          verticalAlign: 'top',
+          type: 'warning',
+          message: 'You must fill a MD5 of an Aptoide APK',
+          timeout: 5000
+        });
+      }
     }      
   }
 }

@@ -35,7 +35,6 @@ def insert_new_apk2scan(md5):
     sql = "INSERT INTO apk2scan (md5, created_at) VALUES ('%s', NOW())" % (md5)
     log.debug(sql)
     try:
-        # print(sql)
         cursor.execute(sql)
         db.commit()
     except:
