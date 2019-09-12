@@ -6,6 +6,7 @@ import math
 import json
 import configparser
 import logging as log
+from sys import platform
 import requests
 from tqdm import tqdm
 import database as db
@@ -16,49 +17,53 @@ config.read('config.ini')
 log.basicConfig(filename=config['GENERAL']['logDir'] + "appsentinel.log", filemode='a', format='%(asctime)s,%(msecs)d | %(name)s | %(levelname)s | %(funcName)s:%(lineno)d | %(message)s', datefmt='%H:%M:%S', level=log.DEBUG)
 
 aptoide_API_endpoint = config['DOWNLOAD']['aptoideAPIEndpoint']
+
 dir = config['DOWNLOAD']['apkDownloadDir']
 json_dir = config['DOWNLOAD']['jsonDir']
-
-
-def download_apk(which_apk):
+   
+def download_apk(app2download):
     # check if the download dir exists or not
+    print ('Operational system:'+platform) # linux / linux2 / win32 / darwin
     if not os.path.exists(dir):
-        os.system("mkdir " + dir)
+        os.mkdir(dir)
 
     # write the file to the filesystem
-    a = urlparse(appPath)
+    a = urlparse(app2download)
     filename = dir + "/" + os.path.basename(a.path)
 
-    # Streaming, so we can iterate over the response.
-    r = requests.get(appPath, stream=True)
+    if (os.path.isfile(filename)):
+        print ('File already downloaded')
+    else:
+        # Streaming, so we can iterate over the response.
+        r = requests.get(app2download, stream=True)
 
-    # Total size in bytes.
-    total_size = int(r.headers.get('content-length', 0))
-    block_size = 1024
-    wrote = 0
-    with open(filename, 'wb') as f:
-        for data in tqdm(r.iter_content(block_size), total=math.ceil(total_size // block_size), unit='KB',
-                         unit_scale=True):
-            wrote = wrote + len(data)
-            f.write(data)
-    if total_size != 0 and wrote != total_size:
-        print("ERROR, something went wrong")
+        # Total size in bytes.
+        total_size = int(r.headers.get('content-length', 0))
+        block_size = 1024
+        wrote = 0
+        with open(filename, 'wb') as f:
+            for data in tqdm(r.iter_content(block_size), total=math.ceil(total_size // block_size), unit='KB',
+                            unit_scale=True):
+                wrote = wrote + len(data)
+                f.write(data)
+        if total_size != 0 and wrote != total_size:
+            print("ERROR, something went wrong")
 
 
 def get_json_data(which_apk):
     response = requests.get(aptoide_API_endpoint + which_apk)
-    jsondata = response.json()
-    return jsondata
+    jsoninfo = response.json()
+    return jsoninfo
 
 
-def write_json_data(jsondata, whick_apk):
-    # check if the json dir exists or not
+def write_json_data(jsonData, whick_apk):
     if not os.path.exists(json_dir):
-        os.system("mkdir " + json_dir)
+        os.mkdir(json_dir)
 
     filename = json_dir + "/" + whick_apk + ".json"
+    print ('write filename:'+filename)
     with open(filename, 'w') as f:
-        f.write(json.dumps(jsondata))
+        f.write(json.dumps(jsonData))
     f.close()
     return True
 
@@ -78,6 +83,7 @@ if __name__=="__main__":
         for apk in apks:
             print(apk[1])
             jsondata = get_json_data(apk[1])
+            # print (jsondata)
             # check what is the return of the API call -> check if the APK exists!!!
             if jsondata["info"]["status"] == "FAIL":
                 # that APK can't be found
@@ -102,7 +108,8 @@ if __name__=="__main__":
                 db.insert_new_apk(apk[1], applicationName, applicationPackage, appVersion, appPath, apkfile)
                 log.debug(config['GENERAL']['python3cmd'] + " scanner.py --md5 " + appMD5 + " --file " + dir + "/" + apkfile)
                 os.system(config['GENERAL']['python3cmd'] + " scanner.py --md5 " + appMD5 + " --file " + dir + "/" + apkfile)
-                db.delete_apk2scan(apk[1])
+                # db.delete_apk2scan(apk[1])
+                print("Manager DONE!")
     else:
         print("No apks yet... waiting patiently!!!")
         log.debug("No apks yet... waiting patiently!!!")
