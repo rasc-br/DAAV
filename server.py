@@ -6,12 +6,12 @@ import configparser
 from datetime import datetime, timedelta
 # from functools import wraps
 from flask import (Flask, jsonify, request, current_app) # Response, Blueprint
+import base64
 from flask_cors import CORS
 from flasgger import Swagger
 from flasgger.utils import swag_from
 import jwt
 import database as db
-import base64
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read('config.ini')

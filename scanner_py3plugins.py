@@ -1,8 +1,8 @@
 # vulnScanManager, will be responsible for checking a specific directory for apks and for processing them!
 import os.path
 import argparse
-# import multiprocessing
 import configparser
+import imp
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -47,7 +47,7 @@ A tool to scan APKs and look for vulnerabilities
 '''
 if __name__=="__main__":
     VERSION = '0.1'
-    banner = "SCANNER"
+    banner = "SCANNER PYTHON 3 PLUGINS"
 
     plugins = []
     thisPlugin = 0
@@ -73,23 +73,25 @@ if __name__=="__main__":
     print("APK MD5 -> " + md5Id)
 
     # looking for the plugins
-    pluginDir = os.path.dirname(os.path.abspath(__file__))
-    print(pluginDir)
+    pluginDir = os.path.dirname(os.path.abspath(__file__)) # main plugin folder
+    completePluginDir = os.path.join(pluginDir, 'plugins3')
+    print("Plugin folder -> " + completePluginDir)
 
     # test the existence of the results directory
     if not os.path.exists(jsonResultsLocation):
         os.mkdir(jsonResultsLocation)
     counter_plugins = 0
     plugins = []
-    for file in os.listdir(pluginDir):
+    for file in os.listdir(completePluginDir):
         if file[0:7] == "plugin_" and file[-3:] == ".py":
-            print(file)
-            # we need to do something with them... need to check if it is better to import or to spawn (decide later)
-            print("Importing -> " + ".".join(file.split(".")[0:-1]))
-            thisPlugin = __import__(".".join(file.split(".")[0:-1]))
-            if thisPlugin.enable:
-                plugins.append(thisPlugin)
-                counter_plugins = counter_plugins + 1
+            print("\n"+file)
+            module_name = "plugin.".join(file.split(".")[0:-1])+".py"
+            print("Importing -> " + module_name)
+            complete_path = os.path.join(completePluginDir, module_name)
+            # TODO: Used deprecated imp.load_source to dynamically found folder and file (python3)
+            thisPlugin = imp.load_source(module_name, complete_path)
+            plugins.append(thisPlugin)
+            counter_plugins = counter_plugins + 1
 
     # we use the same approach to look for the APKs to analyse
     listPlugins()
@@ -105,7 +107,9 @@ if __name__=="__main__":
     #     p.start()
 
     # Execute plugins one by one (»TO DO: enroll into one function THEN multithreading )
-    print (plugins[1])
+
+    # print (plugins[1])
+
     # to run androbugs it must be py -2
-    print (androbugs.main('-f', apkFile)) # plugins[plugin_number]
+    # print (androbugs.main('-f', apkFile)) # plugins[plugin_number]
 
