@@ -3563,7 +3563,7 @@ def __persist_file(writer, args) :
 		return False
 
 
-def main(argType=None,apkName=None) :
+def main(apkName=None,argType="-f") :
 
 	sys.argv.append(argType)
 	sys.argv.append(apkName)
@@ -3582,7 +3582,7 @@ def main(argType=None,apkName=None) :
 		------------------------------------------------------------------------------------------------
 		
 		""")
-
+		writer.writePlainInf("file:"+apkName)
 		#Analyze
 		__analyze(writer, args)
 

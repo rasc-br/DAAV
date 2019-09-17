@@ -2,7 +2,7 @@
 
 import configparser
 import logging as log
-import json
+# import json
 import pymysql
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -11,11 +11,11 @@ config.read('config.ini')
 
 log.basicConfig(filename=config['GENERAL']['logDir'] + "appsentinel.log", filemode='a', format='%(asctime)s,%(msecs)d | %(name)s | %(levelname)s | %(funcName)s:%(lineno)d | %(message)s', datefmt='%H:%M:%S', level=log.DEBUG)
 
-def insert_results(md5, tool, results_location, status, details):
+def insert_results(md5, tool, results_location, status, details, apk_name):
     db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
                          config['MYSQL']['database'])
     cursor = db.cursor()
-    sql = "INSERT INTO apkresults (md5, scantool, results_location, status, details, created_at) VALUES ('%s', '%s', '%s', '%s', '%s', NOW())" % (md5, tool, results_location, status, details)
+    sql = "INSERT INTO apkresults (md5, scantool, results_location, status, details, created_at, apk_name) VALUES ('%s', '%s', '%s', '%s', '%s', NOW(), '%s')" % (md5, tool, results_location, status, details, apk_name)
     log.debug(sql)
     try:
         cursor.execute(sql)
