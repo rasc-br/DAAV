@@ -134,7 +134,7 @@ LINE_MAX_OUTPUT_INDENT = 20
 
 #Customized settings:
 
-DEBUG = True
+DEBUG = False
 ANALYZE_ENGINE_BUILD_DEFAULT = 1    # Analyze Engine(use only number)
 
 DIRECTORY_APK_FILES = ""  # "APKs/"
@@ -3563,8 +3563,9 @@ def __persist_file(writer, args) :
 		return False
 
 
-def main(apkName=None,argType="-f") :
+def main(argType=None,apkName=None) :
 
+	
 	sys.argv.append(argType)
 	sys.argv.append(apkName)
 
@@ -3582,7 +3583,7 @@ def main(apkName=None,argType="-f") :
 		------------------------------------------------------------------------------------------------
 		
 		""")
-		writer.writePlainInf("file:"+apkName)
+		# writer.writePlainInf(args)
 		#Analyze
 		__analyze(writer, args)
 
@@ -3593,6 +3594,7 @@ def main(apkName=None,argType="-f") :
 
 	except ExpectedException as err_expected :
 
+		writer.writePlainInf("ERROR: ExpectedException")
 		writer.update_analyze_status("fail")
 
 		writer.writeInf_ForceNoPrint("analyze_error_type_expected", True)
@@ -3608,6 +3610,7 @@ def main(apkName=None,argType="-f") :
 
 	except BadZipfile as zip_err :	#This may happen in the "a = apk.APK(apk_Path)"
 
+		writer.writePlainInf("ERROR: BadZipfile")
 		writer.update_analyze_status("fail")
 
 		#Save the fail message to db
@@ -3627,6 +3630,7 @@ def main(apkName=None,argType="-f") :
 
 	except Exception as err :
 
+		writer.writePlainInf("ERROR: Exception")
 		writer.update_analyze_status("fail")
 
 		#Save the fail message to db
@@ -3647,9 +3651,8 @@ def main(apkName=None,argType="-f") :
 	if args.store_analysis_result_in_db :
 		__persist_db(writer, args)
 
-
 	if writer.get_analyze_status() == "success" :
-
+		writer.writePlainInf("SUCCESS! -> Output:"+REPORT_OUTPUT)
 		if REPORT_OUTPUT == TYPE_REPORT_OUTPUT_ONLY_PRINT :
 			writer.show(args)
 		elif REPORT_OUTPUT == TYPE_REPORT_OUTPUT_ONLY_FILE :

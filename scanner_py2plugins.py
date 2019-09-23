@@ -4,11 +4,7 @@ from __future__ import absolute_import
 import os.path
 import argparse
 import ConfigParser
-# import imp
-# import pkgutil
-# import types
 import sys
-# import pkgutil
 import database2 as db
 
 config = ConfigParser.ConfigParser()
@@ -32,36 +28,18 @@ def runPlugins():
     print("Running all the available plugins:")
     for analizePugin in plugins:
         print ("\n Executing -> "+analizePugin.pluginName+" over "+apkFile+"\n")
-        pluginResult = analizePugin.main(apkFile)
-        # results.append(Results(analizePugin.pluginName, pluginResult))
-        print (pluginResult)
-        # c = analizePugin.PluginClass()
-        # c.run(apkLocation)
-
-# def selectPlugin(pluginNum):
-#     thisPlugin = plugins[pluginNum]
+        pluginResult = analizePugin.main('-f',apkFile)
+        results.append(Results(analizePugin.pluginName, pluginResult))
+        print ("\n Finished: " + analizePugin.pluginName +" \n")
 
 def storeResults():
     if (results):
         total = 0
         print("\n Storing Results over database")
         for result in results:
-            db.insert_results(md5Id, result.plugin, 'location', 'done', result.jsonResult, apkFile)
+            db.insert_results(md5Id, result.plugin, 'location', '1', 'details', result.jsonResult, apkFile)
             total = total + 1
-        print("\n DONE inserting into database, total: "+total)
-
-# def runSelectedPlugin():
-#     if thisPlugin == 0:
-#         raise ValueError("you didn't assign a module yet.")
-#     c = thisPlugin.PluginClass()
-#     c.run()
-
-
-# def run_this_plugin(plugin_number, apk_location, apk_md5):
-#     thisPlugin = plugins[plugin_number]
-#     c = thisPlugin.PluginClass()
-#     c.run(apk_location, apk_md5)
-
+        print("\n DONE inserting into database \n")
 
 '''
 A tool to scan APKs and look for vulnerabilities
@@ -121,6 +99,7 @@ if __name__=="__main__":
     if (plugins):
         listPlugins()
         runPlugins()
+        storeResults()
 
     # an alternative testing to run the tools in parallel
     # for i in range(counter_plugins):

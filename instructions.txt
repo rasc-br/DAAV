@@ -1,14 +1,17 @@
+Install both Pythons (2 and 3)
+https://www.python.org/downloads/
+(Both versions over Windows:https://spapas.github.io/2017/12/20/python-2-3-windows/)
+
 Install requirement: FLASK
 pip install -U Flask
-
-Install requirement: Flask extension SQLAlchemy
-pip install -U Flask-SQLAlchemy
+pip install -U flask-cors
 
 Install MySQL Server
 https://dev.mysql.com/downloads/installer/
 
 Install requirement: PyMySQL
 pip install PyMySQL
+(2x - using pip on Python 2 and 3)
 
 Install requirement: flasgger
 pip install -U setuptools
@@ -22,10 +25,6 @@ pip install tqdm
 
 Install requirement: Python JWT Authentication
 pip install PyJWT
-
-Install Python Lint for Flask-SQLAlchemy (deprecated)
-pip install pylint-flask
-pip install pylint_flask_sqlalchemy
 
 For Visual Studio Code:
 File » Preferences » Settings » Extensions » JSON » Edit settings.JSON

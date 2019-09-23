@@ -89,7 +89,7 @@ if __name__=="__main__":
                 # that APK can't be found
                 log.debug("This APK doesn't exist on APTOIDE -> APK = " + apk[1])
                 db.delete_apk2scan(apk[1])
-                db.insert_results(apk[1], "", "", -1, "This APK does not exist, or it could not be downloaded from the Aptoide app store!")
+                db.insert_results(apk[1], "", "", -1, "This APK does not exist, or it could not be downloaded from the Aptoide app store!", 'none')
             else:
                 applicationName = jsondata["nodes"]["meta"]["data"]["name"]
                 applicationPackage = jsondata["nodes"]["meta"]["data"]["package"]

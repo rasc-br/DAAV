@@ -63,10 +63,10 @@ class Stack :
         nb = 0
 
         if len(self.__elems) == 0 :
-            print "\t--> nil"
+            print ("\t--> nil")
 
         for i in self.__elems :
-            print "\t-->", nb, ": ", i
+            print ("\t-->", nb, ": ", i)
             nb += 1
 
 class ContextField(object):
@@ -404,7 +404,7 @@ class BreakBlock(object):
 
     def show(self):
         for i in self._ins:
-            print "\t\t",
+            print ("\t\t"),
             i.show(0)
 
 DVM_FIELDS_ACCESS = {
@@ -877,7 +877,7 @@ def show_Path(vm, path):
   if isinstance(path, PathVar):
     dst_class_name, dst_method_name, dst_descriptor =  path.get_dst( cm )
     info_var = path.get_var_info()
-    print "%s %s (0x%x) ---> %s->%s%s" % (path.get_access_flag(),
+    print ("%s %s (0x%x) ---> %s->%s%s" % (path.get_access_flag()),
                                           info_var,
                                           path.get_idx(),
                                           dst_class_name,
@@ -888,7 +888,7 @@ def show_Path(vm, path):
       src_class_name, src_method_name, src_descriptor =  path.get_src( cm )
       dst_class_name, dst_method_name, dst_descriptor =  path.get_dst( cm )
 
-      print "%d %s->%s%s (0x%x) ---> %s->%s%s" % (path.get_access_flag(),
+      print ("%d %s->%s%s (0x%x) ---> %s->%s%s" % (path.get_access_flag()),
                                                   src_class_name,
                                                   src_method_name,
                                                   src_descriptor,
@@ -898,7 +898,7 @@ def show_Path(vm, path):
                                                   dst_descriptor)
     else:
       src_class_name, src_method_name, src_descriptor =  path.get_src( cm )
-      print "%d %s->%s%s (0x%x)" % (path.get_access_flag(),
+      print ("%d %s->%s%s (0x%x)" % (path.get_access_flag()),
                                     src_class_name,
                                     src_method_name,
                                     src_descriptor,
@@ -1036,7 +1036,7 @@ def show_PathVariable(vm, paths):
       access, idx = path[0]
       m_idx = path[1]
       method = vm.get_cm_method(m_idx)
-      print "%s %x %s->%s %s" % (access, idx, method[0], method[1], method[2][0] + method[2][1])
+      print ("%s %x %s->%s %s" % (access, idx, method[0], method[1], method[2][0] + method[2][1]))
 
 
 class PathP(object):
@@ -1226,15 +1226,15 @@ class TaintedPackage(object):
 
     def show(self):
         cm = self.vm.get_class_manager()
-        print self.get_name()
+        print (self.get_name())
         for _type in self.paths:
-            print "\t -->", _type
+            print ("\t -->", _type)
             if _type == TAINTED_PACKAGE_CALL:
                 for path in self.paths[_type]:
-                    print "\t\t => %s <-- %x in %s" % (path.get_dst(cm), path.get_idx(), path.get_src(cm))
+                    print ("\t\t => %s <-- %x in %s" % (path.get_dst(cm), path.get_idx(), path.get_src(cm)))
             else:
                 for path in self.paths[_type]:
-                    print "\t\t => %x in %s" % (path.get_idx(), path.get_src(cm))
+                    print ("\t\t => %x in %s" % (path.get_idx(), path.get_src(cm)))
 
 def show_Permissions(dx):
     """
@@ -1245,7 +1245,7 @@ def show_Permissions(dx):
     p = dx.get_permissions( [] )
 
     for i in p:
-        print i, ":"
+        print (i, ":")
         for j in p[i]:
             show_Path( dx.get_vm(), j )
 
@@ -1284,7 +1284,7 @@ def show_NativeMethods(dx):
         :param dx : the analysis virtual machine
         :type dx: a :class:`VMAnalysis` object
     """
-    print get_NativeMethods(dx)
+    print (get_NativeMethods(dx))
 
 
 def show_ReflectionCode(dx):
@@ -2029,7 +2029,7 @@ class MethodAnalysis(object):
         h = {}
         idx = 0
 
-        debug("Parsing instructions")
+        #debug("Parsing instructions")
         instructions = [i for i in bc.get_instructions()]
         for i in instructions:
             for j in BO["BasicOPCODES_H"]:
@@ -2041,14 +2041,14 @@ class MethodAnalysis(object):
 
             idx += i.get_length()
 
-        debug("Parsing exceptions")
+        #debug("Parsing exceptions")
         excepts = BO["Dexception"]( self.__vm, self.method )
         for i in excepts:
             l.extend( [i[0]] )
             for handler in i[2:]:
                 l.append( handler[1] )
 
-        debug("Creating basic blocks in %s" % self.method)
+        #debug("Creating basic blocks in %s" % self.method)
         idx = 0
         for i in instructions:
             # index is a destination
@@ -2069,7 +2069,7 @@ class MethodAnalysis(object):
         if current_basic.get_nb_instructions() == 0:
             self.basic_blocks.pop(-1)
 
-        debug("Settings basic blocks childs")
+        #debug("Settings basic blocks childs")
 
         for i in self.basic_blocks.get():
             try:
@@ -2077,7 +2077,7 @@ class MethodAnalysis(object):
             except KeyError:
                 i.set_childs( [] )
 
-        debug("Creating exceptions")
+        #debug("Creating exceptions")
 
         # Create exceptions
         self.exceptions.add(excepts, self.basic_blocks)
@@ -2111,21 +2111,21 @@ class MethodAnalysis(object):
         return self.tainted.get_tainted_variables().get_local_variables( self.method )
 
     def show(self):
-        print "METHOD", self.method.get_class_name(), self.method.get_name(), self.method.get_descriptor()
+        print ("METHOD", self.method.get_class_name(), self.method.get_name(), self.method.get_descriptor())
 
         for i in self.basic_blocks.get():
-            print "\t", i
+            print ("\t", i)
             i.show()
-            print ""
+            print ("")
 
     def show_methods(self):
-        print "\t #METHODS :"
+        print ("\t #METHODS :")
         for i in self.__bb:
             methods = i.get_methods()
             for method in methods:
-                print "\t\t-->", method.get_class_name(), method.get_name(), method.get_descriptor()
+                print ("\t\t-->", method.get_class_name(), method.get_name(), method.get_descriptor())
                 for context in methods[method]:
-                    print "\t\t\t |---|", context.details
+                    print ("\t\t\t |---|", context.details)
 
     def create_tags(self):
       """
@@ -2346,14 +2346,14 @@ class newVMAnalysis(object):
             self.classes[current_class.get_name()] = ClassAnalysis(current_class)
 
     def create_xref(self):
-        debug("Creating XREF/DREF")
+        #debug("Creating XREF/DREF")
 
         instances_class_name = self.classes.keys()
         external_instances = {}
 
         for current_class in self.vm.get_classes():
             for current_method in current_class.get_methods():
-                debug("Creating XREF for %s" % current_method)
+                #debug("Creating XREF for %s" % current_method)
 
                 code = current_method.get_code()
                 if code == None:
@@ -2419,10 +2419,10 @@ class newVMAnalysis(object):
         return MethodAnalysis( self.vm, method, None )
 
     def get_method_by_name(self, class_name, method_name, method_descriptor):
-        print class_name, method_name, method_descriptor
+        print (class_name, method_name, method_descriptor)
         if class_name in self.classes:
             for method in self.classes[class_name].get_vm_class().get_methods():
-                print method.get_name(), method.get_descriptor()
+                print (method.get_name(), method.get_descriptor())
                 if method.get_name() == method_name and method.get_descriptor() == method_descriptor:
                     return method
         return None
