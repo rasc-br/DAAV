@@ -71,6 +71,7 @@ def apkscan():
         return jsonify({'status': False, 'message': 'Hey...! Where is my MD5???'}), 400, {'Access-Control-Allow-Origin':'*'}
     else:
         md5Apk = data["md5"]
+        username = data["username"]
         log.debug("APK MD5 = " + md5Apk)
         # 1. add the apk to scan to the database
         if db.apk_id_exists(md5Apk, 'apkresults'):
@@ -80,7 +81,7 @@ def apkscan():
             if db.apk_id_exists(md5Apk, 'apk2scan'):
                 return jsonify({'status': False, 'message': 'That APK is already in the pipeline to be processed... wait for the results!'}), 400, {'Access-Control-Allow-Origin':'*'}
             else:
-                db.insert_new_apk2scan(md5Apk)
+                db.insert_new_apk2scan(md5Apk,username)
                 return jsonify({'status': True, 'message': 'APK was passed to the scanning engine... please hold on!'}), 200, {'Access-Control-Allow-Origin':'*'}
 
 

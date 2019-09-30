@@ -37,7 +37,7 @@ def storeResults():
         total = 0
         print("\n Storing Results over database")
         for result in results:
-            db.insert_results(md5Id, result.plugin, 'location', '1', 'details', result.jsonResult, apkFile)
+            db.insert_results(md5Id, result.plugin, 'location', '1', 'details', result.jsonResult, apkFile, username)
             total = total + 1
         print("\n DONE inserting into database \n")
 
@@ -55,19 +55,21 @@ if __name__=="__main__":
     text = "Tool that scans APKs and looks for vulnerabilities"
     parser = argparse.ArgumentParser(description=text)
     parser.add_argument('-v', '--version', action='version', version='Vulnerability Scan Manager ' + VERSION)
-    parser.add_argument('-f', '--file', help='The APK file to analyse.',
-                        action='store', dest='apkfile', nargs=1, default='')
-    parser.add_argument('-m', '--md5', help='The APK file MD5 id to analyse.',
-                        action='store', dest='md5Id', nargs=1, default='')
+    parser.add_argument('-f', '--file', help='The APK file to analyse.', action='store', dest='apkfile', nargs=1, default='')
+    parser.add_argument('-m', '--md5', help='The APK file MD5 id to analyse.', action='store', dest='md5Id', nargs=1, default='')
+    parser.add_argument('-u', '--user', help='User that upload the apk', action='store', dest='username', nargs=1, default='test')                    
     args = parser.parse_args()
 
     # print(args)
 
     apkFile = args.apkfile[0]
     md5Id = args.md5Id[0]
+    username = args.username[0]
 
-    print("APK FILE -> " + apkFile)
+    print("\nAPK FILE -> " + apkFile)
     print("APK MD5 -> " + md5Id)
+    print("Username -> " + username)
+    print("\n")
 
     # looking for the plugins
     pluginDir = os.path.dirname(os.path.abspath(__file__)) # main plugin folder

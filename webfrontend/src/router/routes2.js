@@ -12,6 +12,7 @@ const Icons = () => import(/* webpackChunkName: "common" */ "@/pages/Icons.vue")
 // const Typography = () => import(/* webpackChunkName: "common" */ "@/pages/Typography.vue");
 // const TableList = () => import(/* webpackChunkName: "common" */ "@/pages/TableList.vue");
 const Upload = () => import(/* webpackChunkName: "common" */ "@/pages/Upload.vue");
+const Reports = () => import(/* webpackChunkName: "common" */ "@/pages/Reports.vue");
 
 const routes = [
   {
@@ -44,6 +45,11 @@ const routes = [
         name: "upload",
         component: Upload
       },      
+      {
+        path: "reports",
+        name: "reports",
+        component: Reports
+      },          
     ]
   },
   { path: "*", component: NotFound }

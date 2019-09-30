@@ -28,11 +28,11 @@ def insert_results(md5, tool, results_location, status, details, apk_name):
     db.close()
 
 
-def insert_new_apk2scan(md5):
+def insert_new_apk2scan(md5,username):
     db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
                          config['MYSQL']['database'])
     cursor = db.cursor()
-    sql = "INSERT INTO apk2scan (md5, created_at) VALUES ('%s', NOW())" % (md5)
+    sql = "INSERT INTO apk2scan (md5, created_at, username) VALUES ('%s', NOW(), '%s')" % (md5, username)
     log.debug(sql)
     try:
         cursor.execute(sql)
@@ -68,12 +68,12 @@ def delete_apk2scan(md5):
     db.close()
 
 
-def insert_new_apk(md5, applicationName, applicationPackage, applicationVersion, applicationPath, apkFile):
+def insert_new_apk(md5, applicationName, applicationPackage, applicationVersion, applicationPath, apkFile, username):
     db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
                          config['MYSQL']['database'])
     cursor = db.cursor()
-    sql = "INSERT INTO apk (md5, applicationName, applicationPackage, applicationVersion, applicationPath, apkFile, status, created_at, updated_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', %s, NOW(), NOW())" % \
-          (md5, applicationName, applicationPackage, applicationVersion, applicationPath, apkFile, 1)
+    sql = "INSERT INTO apk (md5, applicationName, applicationPackage, applicationVersion, applicationPath, apkFile, status, created_at, updated_at, username) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', %s, NOW(), NOW(), '%s')" % \
+          (md5, applicationName, applicationPackage, applicationVersion, applicationPath, apkFile, 1, username)
     log.debug(sql)
     try:
         # print(sql)

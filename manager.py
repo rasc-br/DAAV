@@ -81,9 +81,8 @@ if __name__=="__main__":
     # 2. For each APK on the database, download it locally, add to the apk table and delete from the table
     if apks:
         for apk in apks:
-            print(apk[1])
             jsondata = get_json_data(apk[1])
-            # print (jsondata)
+            username = apk[3]
             # check what is the return of the API call -> check if the APK exists!!!
             if jsondata["info"]["status"] == "FAIL":
                 # that APK can't be found
@@ -105,13 +104,15 @@ if __name__=="__main__":
                 log.debug(appPath)
                 download_apk(appPath)
                 write_json_data(jsondata, apk[1])
-                db.insert_new_apk(apk[1], applicationName, applicationPackage, appVersion, appPath, apkfile)
+                db.insert_new_apk(apk[1], applicationName, applicationPackage, appVersion, appPath, apkfile, username)
+                print("\n")
                 # log.debug(config['GENERAL']['python3cmd'] + " scanner.py --md5 " + appMD5 + " --file " + dir + "/" + apkfile)
-                print("GO SCANNER (Python 2) »» "+config['GENERAL']['python2cmd'] + " scanner_py2plugins.py --md5 " + appMD5 + " --file " + dir + "/" + apkfile)
-                os.system(config['GENERAL']['python2cmd'] + " scanner_py2plugins.py --md5 " + appMD5 + " --file " + dir + "/" + apkfile)
+                print("GO SCANNER (Python 2) »» "+config['GENERAL']['python2cmd'] + " scanner_py2plugins.py --md5 " + appMD5 + " --user " + username + " --file " + dir + "/" + apkfile)
+                os.system(config['GENERAL']['python2cmd'] + " scanner_py2plugins.py --md5 " + appMD5 + " --user " + username + " --file " + dir + "/" + apkfile)
                 # print("GO SCANNER (Python 3) »» "+config['GENERAL']['python3cmd'] + " scanner_py3plugins.py --md5 " + appMD5 + " --file " + dir + "/" + apkfile)
                 # os.system(config['GENERAL']['python3cmd'] + " scanner_py3plugins.py --md5 " + appMD5 + " --file " + dir + "/" + apkfile)               
                 db.delete_apk2scan(apk[1])
+                print("\n")
                 print("Manager DONE!")
     else:
         print("No apks yet... waiting patiently!!!")
