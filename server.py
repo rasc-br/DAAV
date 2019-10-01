@@ -106,6 +106,7 @@ def apkfeedback(id):
         else:
             return jsonify({'status': False, 'message': 'APK work was not finished... please come back l8r!'}), 500, {'Access-Control-Allow-Origin':'*'}
 
+
 @app.route('/register/', methods=('POST',))
 def register():
     data = request.get_json(silent=True)
@@ -150,6 +151,7 @@ def login():
                         'avatar': login_result['profileimg']
                        })
 
+
 @app.route('/edit_profile/', methods=('POST',))
 def edit_profile():
     data = request.get_json(silent=True)
@@ -161,6 +163,17 @@ def edit_profile():
     else:
         print('Error editing profile in database')
     return edited_profile
+
+
+@app.route('/resultlist', methods=['POST',])
+def result_list():
+    data = request.get_json(silent=True)
+
+    username = data["username"]
+    print("\nGrab Result of username:"+username)
+    results = db.get_all_results(username)
+    return results
+
 
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':

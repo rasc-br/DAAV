@@ -17,8 +17,9 @@ def insert_results(md5, tool, results_location, status, details, json_result, ap
     # print (type(details))
     cursor = db.cursor()
     now = datetime.datetime.now()
-    blob_result = base64.b64encode(json_result)
-    sql = "INSERT INTO apkresults (md5, scantool, results_location, status, details, blob_result, created_at, apk_name, username) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (md5, tool, results_location, status, details, blob_result, now, apk_name, username)  
+    b64_result = base64.b64encode(json_result)
+
+    sql = "INSERT INTO apkresults (md5, scantool, results_location, status, details, created_at, apk_name, username, result_b64) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (md5, tool, results_location, status, details, now, apk_name, username, b64_result)  
     try:
         cursor.execute(sql)
         db.commit()

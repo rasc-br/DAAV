@@ -14,8 +14,10 @@
 </template>
 <script>
 import { BaseTable } from "@/components";
+import { api } from '@/mixins/apiMixin';
 
 export default {
+  mixins: [api],  
   components: {
     BaseTable
   },
@@ -25,13 +27,11 @@ export default {
         title: "APKs Scan Results",
         columns: ["ID", "Apk Full Name", "MD5", "Tool", "Created at", "Result"],
         data: [
-                {
-                  id: 1,
-                  md5: "Dakota Rice",
-                  'apk full name': "$36.738",
-                  country: "Niger",
-                  city: "Oud-Turnhout",
-                }
+                // {
+                //   id: 1,
+                //   md5: "blahblahblah",
+                //   'apk full name': "Blaah",
+                // }
         ]
       },
     };
@@ -40,7 +40,7 @@ export default {
 
   },
   mounted() {
-    
+    this.getResultsList();
   },
 };
 </script>

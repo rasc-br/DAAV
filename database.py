@@ -2,8 +2,10 @@
 
 import configparser
 import logging as log
-# import json
+import json
 import pymysql
+import datetime
+import base64
 from werkzeug.security import generate_password_hash, check_password_hash
 
 config = configparser.ConfigParser()
@@ -137,6 +139,7 @@ def register_user(username, password, email):
             return 'Database error'
     db.close()
 
+
 def login_user(username, password):
     db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
                          config['MYSQL']['database'])
@@ -172,6 +175,7 @@ def login_user(username, password):
             return 'Database error'
     db.close()
 
+
 def edit_profile(data):
     db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
                          config['MYSQL']['database'])
@@ -192,3 +196,27 @@ def edit_profile(data):
         db.rollback()
         return 'Database error'
     db.close()
+
+def convertSQLResult(o):
+    if isinstance(o, datetime.datetime):
+        return o.__str__()
+
+def get_all_results(username):
+    db = pymysql.connect(config['MYSQL']['host'], config['MYSQL']['user'], config['MYSQL']['password'],
+                         config['MYSQL']['database'])
+    cursor = db.cursor()
+    sql = "SELECT * FROM apkresults WHERE username = '" + username + "' ORDER BY id"
+    # Consider order by app name (save in apkresults app name)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    db.close()
+
+    dict_data = [dict(zip([key[0] for key in cursor.description], row)) for row in result]
+
+    for item in dict_data:
+        item['result_b64'] = (base64.b64decode(item['result_b64'])).decode()
+        item['result_b64'] = json.loads(item['result_b64'])
+    # dict_data['result_b64'] = base64.b64decode(dict_data['result_b64'])
+    json_data = json.dumps(dict_data, default = convertSQLResult)
+
+    return json_data

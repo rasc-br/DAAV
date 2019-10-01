@@ -36,7 +36,6 @@ export const api = {
                 if (res.data.token)
                 {
                     self.token = res.data.token;
-                    // this.$userProfileData = res.data;
                     Object.keys(res.data).forEach((key) => {
                         if (res.data[key] && res.data[key] != 'none')
                         {
@@ -77,6 +76,15 @@ export const api = {
             }).catch((error) => {
                 this.tempResult = {'message':error.response.data.message,'status':'FAIL'};
             });
-        },             
+        },     
+        async getResultsList(){
+            let info = {'username':this.$userProfileData.username};
+            await axios.post(`${this.apiPath}/resultlist`, info, this.header).then((res) => {
+                this.tempResult = {'allResults':res.data,'status':'GotResults'};
+                alert(this.tempResult)
+            }).catch((error) => {
+                this.tempResult = {'message':error.response.data.message,'status':'FAIL'};
+            });
+        },                    
     }
 }
