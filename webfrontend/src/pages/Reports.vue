@@ -25,14 +25,8 @@ export default {
     return {
       resultsTable: {
         title: "APKs Scan Results",
-        columns: ["ID", "Apk Full Name", "MD5", "Tool", "Created at", "Result"],
-        data: [
-                // {
-                //   id: 1,
-                //   md5: "blahblahblah",
-                //   'apk full name': "Blaah",
-                // }
-        ]
+        columns: ["Apk Full Name", "MD5", "Tool", "Created at", "Result"],
+        data: []
       },
     };
   },
@@ -40,7 +34,27 @@ export default {
 
   },
   mounted() {
-    this.getResultsList();
+    // Send data to Table
+    let self = this;
+    this.getResultsList().then(()=>{
+        if (self.tempResult && self.tempResult.allResults && self.tempResult.allResults.length > 0)
+        {
+          self.tempResult.allResults.forEach((row, index) => {
+          // Consider send Apk Name in object trought database.py
+          row.apk_name = row.apk_name.replace('download/','').substring(0,26);
+            let item = {
+              id: index,
+              'apk full name': row.apk_name,
+              md5: row.md5,
+              tool: row.scantool,
+              'created at': row.created_at,
+              result:'Details',
+              details: row.result_b64
+          }
+          this.resultsTable.data.push(item)
+        });
+      }
+    })
   },
 };
 </script>

@@ -81,7 +81,6 @@ export const api = {
             let info = {'username':this.$userProfileData.username};
             await axios.post(`${this.apiPath}/resultlist`, info, this.header).then((res) => {
                 this.tempResult = {'allResults':res.data,'status':'GotResults'};
-                alert(this.tempResult)
             }).catch((error) => {
                 this.tempResult = {'message':error.response.data.message,'status':'FAIL'};
             });

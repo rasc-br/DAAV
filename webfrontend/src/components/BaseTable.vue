@@ -11,9 +11,17 @@
     <tr v-for="(item, index) in data" :key="index">
       <slot :row="item">
         <td v-for="(column, index) in columns"
-            :key="index"
-            v-if="hasValue(item, column)">
-          {{itemValue(item, column)}}
+            :key="index">
+          <span v-if="hasValue(item, column) && item[column.toLowerCase()] != 'Details'">
+             {{itemValue(item, column)}}
+          </span>
+          <base-button v-else link type="primary">
+            <router-link :to="{ name: 'result', params: { detailed_results: item.details } }">{{item[column.toLowerCase()]}}</router-link>
+          </base-button>
+          <!-- <base-button v-else link type="primary"
+            @click="sendTo(item.details)">
+            {{item[column.toLowerCase()]}}
+          </base-button> -->
         </td>
       </slot>
     </tr>
@@ -61,7 +69,11 @@
       },
       itemValue(item, column) {
         return item[column.toLowerCase()];
-      }
+      },
+      // sendTo(details) {
+      //   // this.detailed_results = details;
+      //   window.location.href = `${window.location.origin}/#/main/result`;
+      // },
     }
   };
 </script>
