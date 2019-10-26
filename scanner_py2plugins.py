@@ -6,23 +6,31 @@ import argparse
 import ConfigParser
 import sys
 import database2 as db
+import json
+import ast
 
 config = ConfigParser.ConfigParser()
 config.read('config.ini')
 
 jsonResultsLocation = config.get('SCANNER', 'jsonResultsLocation')
 apkDownloadedFolder = config.get('DOWNLOAD', 'apkDownloadDir')
+dictionaryOWASP = config.get('DICTIONARY', 'owasp')
 
 class Results(object):
     def __init__(self, plugin=None, jsonResult=None):
         self.plugin = plugin
         self.jsonResult = jsonResult
 
+def flatten_dict(dd, separator ='_', prefix =''): 
+    return { prefix + separator + k if prefix else k : v 
+             for kk, vv in dd.items() 
+             for k, v in flatten_dict(vv, separator, kk).items() 
+             } if isinstance(dd, dict) else { prefix : dd } 
+
 def listPlugins():
     print("These are the available plugins:")
     for m in plugins:
         print("\n"+m.pluginName+"\n")
-
 
 def runPlugins():
     print("Running all the available plugins:")
@@ -31,6 +39,8 @@ def runPlugins():
         pluginResult = analizePugin.main('-f',apkFile)
         results.append(Results(analizePugin.pluginName, pluginResult))
         print ("\n Finished: " + analizePugin.pluginName +" \n")
+        print ("\n Starting CATEGORIZE! \n")
+        categorize()
 
 def storeResults():
     if (results):
@@ -40,6 +50,41 @@ def storeResults():
             db.insert_results(md5Id, result.plugin, 'location', '1', 'details', result.jsonResult, apkFile, username)
             total = total + 1
         print("\n DONE inserting into database \n")
+
+def storeCategorized():
+    if (categorizedResults):
+        db.insert_results(md5Id, 'Categorized!', 'location', '1', 'details', json.dumps(categorizedResults, indent=4, sort_keys=True, default=str), apkFile, username)
+
+def categorize():
+    if (results):
+        for result in results:
+            with open(dictionaryOWASP, 'r') as d:
+                owaspDict = json.load(d)
+
+            resultDict = ast.literal_eval(result.jsonResult)
+            flattenResultDict = flatten_dict(resultDict)
+            resultValues = flattenResultDict.values()
+            for vulnerability in resultValues:
+                try:
+                    if (type(vulnerability) == str and owaspDict[vulnerability]):
+                        print("Found this vulnerability: "+ vulnerability)
+                        toAdd =  [{
+                                'name': vulnerability,
+                                'details': owaspDict[vulnerability]['title'],
+                                'severity': owaspDict[vulnerability]['level'],
+                                'detectedby': result.plugin,
+                                'feedback': [{ "url": owaspDict[vulnerability]['link']},
+                                            {"video": owaspDict[vulnerability]['book']},
+                                            {"book": owaspDict[vulnerability]['video']},
+                                            {"other": "Nothing to show"}]
+                        }]
+                        categorizedResults[owaspDict[vulnerability]['category']].extend(toAdd)
+                except KeyError:
+                    pass
+
+            print("\n "+result.plugin+" Categorized!")                     
+            # storeCategorized()
+
 
 '''
 A tool to scan APKs and look for vulnerabilities
@@ -84,6 +129,7 @@ if __name__=="__main__":
     counter_plugins = 0
     plugins = []
     results = []
+    categorizedResults = {'M1':[],'M2':[],'M3':[],'M4':[],'M5':[],'M6':[],'M7':[],'M8':[],'M9':[],'M10':[]}
 
     for file in os.listdir(pluginDir):
         if file[0:8] == "plugin2_" and file[-3:] == ".py":
@@ -102,15 +148,4 @@ if __name__=="__main__":
         listPlugins()
         runPlugins()
         storeResults()
-
-    # an alternative testing to run the tools in parallel
-    # for i in range(counter_plugins):
-    #     jobs = []
-    #     p = multiprocessing.Process(target=run_this_plugin, args=(i, apkFile, md5Id))
-    #     jobs.append(p)
-    #     p.start()
-
-    # Execute plugins one by one (»TO DO: enroll into one function THEN multithreading )
-    # print (plugins[1])
-    # print (androbugs.main('-f', apkFile)) # plugins[plugin_number]
-
+        storeCategorized()

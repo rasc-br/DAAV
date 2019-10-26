@@ -14,7 +14,8 @@ log.basicConfig(filename=config.get('GENERAL', 'logDir') + "appsentinel.log", fi
 def insert_results(md5, tool, results_location, status, details, json_result, apk_name, username):
     db = pymysql.connect(config.get('MYSQL', 'host'), config.get('MYSQL', 'user'), config.get('MYSQL', 'password'),
                          config.get('MYSQL', 'database'))
-    # print (type(details))
+    print("Inserting Results of:"+tool)
+    print (type(json_result))
     cursor = db.cursor()
     now = datetime.datetime.now()
     b64_result = base64.b64encode(json_result)

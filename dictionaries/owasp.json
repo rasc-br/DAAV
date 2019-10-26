@@ -1,0 +1,495 @@
+
+    {
+        "SSL Connection Checking": {
+            "title": "URLs that are NOT under SSL",
+            "category": "M3",
+            "level": "critical",
+            "link": ["https://www.owasp.org/index.php/Insecure_Transport"],
+            "book": [],
+            "video": []            
+        },
+        "Security Methods Checking": {
+            "title": "Find some security-related methods",
+            "category": "M1",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Unsafe_Mobile_Code"],
+            "book": [],
+            "video": []
+        },
+        "Security Classes Checking": {
+            "title": "Find some security-related classes",
+            "category": "M1",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Unsafe_Mobile_Code"],
+            "book": [],
+            "video": []
+          },
+          "Master Key Type I Vulnerability": {
+            "title": "This APK is suffered from Master Key Type I Vulnerability",
+            "CVE": "CVE-2013-4787",
+            "category": "M5",
+            "level": "Critical",
+            "link": ["https://nvd.nist.gov/vuln/detail/CVE-2013-4787","https://cwe.mitre.org/data/definitions/320.html","https://www.owasp.org/index.php/Category:Cryptographic_Vulnerability","https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04g-Testing-Cryptography.md"],
+            "book": [],
+            "video": []
+          },
+          "Android Debug Mode Checking": {
+            "title": "DEBUG mode is ON(android:debuggable=true) in AndroidManifest.xml. This is very dangerous. The attackers will be able to sniffer the debug messages by Logcat. Please disable the DEBUG mode if it is a released application.",  
+            "category": "M1",
+            "level": "Critical",
+            "link": ["https://cwe.mitre.org/data/definitions/215.html","https://nvd.nist.gov/vuln/detail/CVE-2019-10212","https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05h-Testing-Platform-Interaction.md","https://www.owasp.org/index.php/Projects/OWASP_Mobile_Security_Project_-_Security_Testing#Debugging"],
+            "book": [],
+            "video": []
+          },
+          "Codes for Checking Android Debug Mode": {
+            "title": "Found codes for checking ApplicationInfo.FLAG_DEBUGGABLE in AndroidManifest.xml",
+            "category": "M1",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Leftover_Debug_Code"],
+            "book": [],
+            "video": []
+          },
+          "Unnecessary Permission Checking": {
+            "title": "Permission android.permission.ACCESS_MOCK_LOCATION only works in emulator environment. Please remove this permission if it is a released application.",
+            "category": "M1",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Least_Privilege_Violation"],
+            "book": [],
+            "video": []
+          },
+          "AndroidManifest PermissionGroup Checking": {
+            "title": "Setting the 'permissionGroup' attribute an empty value will make the permission definition become invalid and no other apps will be able to use the permission.",  
+            "category": "M1",
+            "level": "Critical",
+            "link": ["https://developer.android.com/guide/topics/permissions/overview", "https://developer.android.com/guide/topics/manifest/permission-group-element"],
+            "book": [],
+            "video": []
+          },
+          "AndroidManifest System Use Permission Checking": {
+            "title": "This app should only be released and signed by device manufacturer or Google and put under '/system/app'. If not, it may be a malicious app.",  
+            "category": "M1",
+            "level": "Critical",
+            "link": ["https://developer.android.com/reference/android/Manifest.permission.html#BIND_VPN_SERVICE"],
+            "book": [],
+            "video": []
+          },
+          "AndroidManifest Critical Use Permission Checking": {
+            "title": "This app has very high privileges. Use it carefully.",  
+            "category": "M1",
+            "level": "Critical",
+            "link": ["https://developer.android.com/reference/android/Manifest.permission.html#BIND_VPN_SERVICE"],
+            "book": [],
+            "video": []
+          },
+          "Google Cloud Messaging Suggestion": {
+            "title": "You are now allowing minSdk to less than 8. Please check: http://developer.android.com/about/dashboards/index.html -- Google Cloud Messaging (Push Message) service only allows Android SDK >= 8 (Android 2.2). Pleae check: http://developer.android.com/google/gcm/gcm.html -- You may have the change to use GCM in the future, so please set minSdk to at least 9.",  
+            "category": "M1",
+            "level": "Notice",
+            "link": ["https://developer.android.com/about/dashboards/index.html","http://developer.android.com/google/gcm/gcm.html"],
+            "book": [],
+            "video": []
+          },
+          "Base64 String Encryption": {
+            "title": "Found Base64 encoding, this is very unsafe",
+            "category": "M3",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication"],
+            "book": [],
+            "video": []
+          },
+          "KeyStore Protection Checking": {
+            "title": "Ignore checking KeyStore protected by password or not because you're not using KeyStore.",  
+            "category": "M2",
+            "level": "Critical",
+            "link": ["https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md", "https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage"],
+            "book": [],
+            "video": []
+          },
+          "KeyStore Protection Information": {
+            "title": "Some Keystores are protected by password and seem using SSL-pinning. You can use Portecle tool to manage the certificates in the KeyStore:",  
+            "category": "M3",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning", "https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication"],
+            "book": [],
+            "video": []
+          },
+          "KeyStore File Location": {
+            "title": "BKS Keystore files",  
+            "category": "M2",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage", "https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md"],
+            "book": [],
+            "video": []
+          },
+          "Possible KeyStore File Location": {
+            "title": "BKS possible keystore files",  
+            "category": "M2",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage", "https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md"],
+            "book": [],
+            "video": []
+          },
+          "KeyStore Type Checking": {
+            "title": "Android only accept 'BKS' type KeyStore. Please confirm you are using 'BKS' type KeyStore",
+            "category": "M2",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage", "https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md"],
+            "book": [],
+            "video": []
+          },
+          "Getting Signature Code Checking": {
+            "title": "This app has code checking the package signature in the code. It might be used to check for whether the app is hacked by the attackers. ",
+            "category": "M8",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering"],
+            "book": [],
+            "video": []
+          },
+          "Code Setting Preventing Screenshot Capturing": {
+            "title": "This app has code setting the preventing screenshot capturing. Example: getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE); It is used by the developers to protect the app" , 
+            "category": "M10",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M10-Extraneous_Functionality"],
+            "book": [],
+            "video": []
+          },
+          "Runtime Command Checking": {
+            "title": "This app is using critical function 'Runtime.getRuntime().exec(...)'. Please confirm codes secions are not harmful",
+            "category": "M7",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality"],
+            "book": [],
+            "video": []
+          },
+          "Runtime Critical Command Checking": {
+            "title": "Requesting for root permission code sections Runtime.getRuntime().exec(su) found (Critical but maybe false positive)",
+            "category": "M6",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Category:Access_Control"],
+            "book": [],
+            "video": []
+          },
+          "SSL Implementation Checking (Verifying Host Name in Custom Classes)": {
+            "title": "Self-defined HOSTNAME VERIFIER checking OK",  
+            "category": "M3",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication","https://developer.android.com/training/articles/security-ssl.html"],
+            "book": ["http://goo.gl/BFb65r "],
+            "video": []
+          },
+          "SSL Implementation Checking (Verifying Host Name in Fields)": {
+            "title": "Critical vulnerability ALLOW_ALL_HOSTNAME_VERIFIER field setting or AllowAllHostnameVerifier class instance not found.",  
+            "category": "M3",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication","https://developer.android.com/training/articles/security-ssl.html"],
+            "book": ["http://goo.gl/BFb65r "],
+            "video": []
+          },
+          "SSL Implementation Checking (Insecure component)": {
+            "title": "Did not detect SSLSocketFactory by insecure method getInsecure", 
+            "category": "M3",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication","https://developer.android.com/training/articles/security-ssl.html","http://developer.android.com/reference/android/net/SSLCertificateSocketFactory.html#getInsecure(int, android.net.SSLSessionCache)."],
+            "book": ["http://goo.gl/BFb65r "],
+            "video": []
+          },
+          "SSL Implementation Checking (HttpHost)": {
+            "title": "This app uses HttpHost, but the default scheme is http or HttpHost.DEFAULT_SCHEME_NAME(http). Please change to https", 
+            "category": "M3",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication","https://developer.android.com/training/articles/security-ssl.html","http://developer.android.com/reference/android/net/SSLCertificateSocketFactory.html#getInsecure(int, android.net.SSLSessionCache)."],
+            "book": ["The Most Dangerous Code in the World: Validating SSL Certificates in Non-Browser Software"],
+            "video": []
+          },
+          "SSL Implementation Checking (WebViewClient for WebView)": {
+            "title": "DO NOT use handler.proceed(); inside those methods in extended WebViewClient, which allows the connection even if the SSL Certificate is invalid (MITM Vulnerability).",
+            "category": "M3",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication","https://jira.appcelerator.org/browse/TIMOB-4488"],
+            "book": ["http://seclab.tuwien.ac.at/papers/webview_leet13.pdf","https://www.owasp.org/images/9/99/GiuseppePorcu-OWASPItalyDay19-10-2018.pdf"],
+            "video": []
+          },
+          "WebView Potential XSS Attacks Checking": {
+            "title": "Found setJavaScriptEnabled(true) in WebView, which could exposed to potential XSS attacks. Please check the web page code carefully and sanitize the output",  
+            "category": "M10",
+            "level": "Warning",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M10-Extraneous_Functionality","https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)"],
+            "book": [],
+            "video": []
+          },
+          "SQLiteDatabase Transaction Deprecated Checking": {
+            "title": "Ignore checking SQLiteDatabase:beginTransactionNonExclusive",  
+            "category": "M2",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage","https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html#beginTransactionNonExclusive()"],
+            "book": [],
+            "video": []
+          },
+          "App Sandbox Permission Checking": {
+            "title": "Security issues MODE_WORLD_READABLE or MODE_WORLD_WRITEABLE found (Please check: https://www.owasp.org/index.php/Mobile_Top_10_2014-M2)",  
+            "category": "M2",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage"],
+            "book": [],
+            "video": []
+          },
+          "Native Library Loading Checking": {
+            "title": "Native library loading codes(System.loadLibrary(...)) found.",  
+            "category": "M1",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage","https://www.owasp.org/index.php/Unsafe_JNI"],
+            "book": [],
+            "video": []
+          },
+          "Native Methods Checking": {
+            "title":  "Native methods found",
+            "category": "M7",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality"],
+            "book": [],
+            "video": []
+          },
+          "Encryption Framework - Bangcle": {
+            "title": "This app is using Bangcle Encryption Framework (http://www.bangcle.com/). Please send your unencrypted apk instead so that we can check thoroughly.",  
+            "category": "M5",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography"],
+            "book": [],
+            "video": []
+          },
+          "Encryption Framework - Ijiami": {
+            "title": "This app is using Ijiami Encryption Framework (http://www.ijiami.cn/). Please send your unencrypted apk instead so that we can check thoroughly.",  
+            "category": "M5",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography"],
+            "book": [],
+            "video": []
+          },
+          "Framework - MonoDroid": {
+            "title": "This app is using MonoDroid Framework (http://xamarin.com/android).",  
+            "category": "M5",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M5-Insufficient_Cryptography"],
+            "book": [],
+            "video": []
+          },
+          "Dynamic Code Loading": {
+            "title": "Dynamic code loading(DexClassLoader) found.",
+            "category": "M7",
+            "level": "Warning",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality"],
+            "book": [],
+            "video": []
+          },
+          "External Storage Accessing": {
+            "title": "External storage access found (Remember DO NOT write important files to external storages)",  
+            "category": "M2",
+            "level": "Warning",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage","https://www.owasp.org/index.php/Insecure_Storage"],
+            "book": [],
+            "video": []
+          },
+          "Fragment Vulnerability Checking": {
+            "title": "You MUST override isValidFragment method in every PreferenceActivity class to avoid Exception",  
+            "CVE": "CVE-2013-6271",
+            "category": "M1",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage","https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-6271","https://securityintelligence.com/new-vulnerability-android-framework-fragment-injection/"],
+            "book": ["https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf"],
+            "video": []
+          },
+          "AndroidManifest Dangerous ProtectionLevel of Permission Checking": {
+            "title": "The protection level of the below classes is dangerous, allowing any other apps to access this permission (AndroidManifest.xml). The app should declare the permission with the android:protectionLevel of signature or signatureOrSystem so that other apps cannot register and receive message for this app. android:protectionLevel=signature ensures that apps with request a permission must be signed with same certificate as the application that declared the permission.", 
+            "category": "M1",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage"],
+            "book": [],
+            "video": []
+          },
+          "AndroidManifest Normal ProtectionLevel of Permission Checking": {
+            "title": "The protection level of the below classes is normal or default (AndroidManifest.xml). The app should declare the permission with the android:protectionLevel of signature or signatureOrSystem so that other apps cannot register and receive message for this app. android:protectionLevel=signature ensures that apps with request a permission must be signed with same certificate as the application that declared the permission. Please make sure these permission are all really need to be exported or otherwise change to signature or signatureOrSystem protection level.",  
+            "category": "M1",
+            "level": "Warning",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage"],
+            "book": [],
+            "video": []
+          },
+          "AndroidManifest Exported Lost Prefix Checking": {
+            "title": "Found exported components that forgot to add android: prefix (AndroidManifest.xml).",  
+            "CVE": "CVE-2013-6272",
+            "category": "M1",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage","https://nvd.nist.gov/vuln/detail/CVE-2013-6272"],
+            "book": [],
+            "video": []
+          },
+          "AndroidManifest Exported Components Checking": {
+            "title": "Found exported components(except for Launcher) for receiving outside applications actions (AndroidManifest.xml). These components can be initilized by other apps. You should add or modify the attribute to [exported=false] if you don't want to. You can also protect it with a customized permission with signature or higher protectionLevel and specify in android:permission attribute.",  
+            "category": "M1",
+            "level": "Warning",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage","https://developer.android.com/guide/topics/manifest/manifest-intro.html"],
+            "book": [],
+            "video": []
+          },
+          "AndroidManifest Exported Components Checking 2": {
+            "title": "Found exported components(except for Launcher) for receiving Google's Android actions (AndroidManifest.xml)",  
+            "category": "M1",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage","https://developer.android.com/guide/topics/manifest/manifest-intro.html"],
+            "book": [],
+            "video": []
+          },
+          "AndroidManifest ContentProvider Exported Checking": {
+            "title": "We strongly suggest you explicitly specify the exported attribute (AndroidManifest.xml). For Android android:targetSdkVersion < 17, the exported value of ContentProvider is true by default. For Android android:targetSdkVersion >= 17, the exported value of ContentProvider is false by default.",   
+            "category": "M1",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage","https://developer.android.com/guide/topics/manifest/manifest-intro.html","https://www.nowsecure.com/blog/2013/10/03/ebay-for-android-content-provider-injection-vulnerability/"],
+            "book": [],
+            "video": []
+          },
+          "AndroidManifest intent-filter Settings Checking": {
+            "title": "AndroidManifest intent-filter Settings found.",  
+            "category": "M1",
+            "level": "Warning",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage","https://developer.android.com/guide/topics/manifest/manifest-intro.html","http://developer.android.com/guide/topics/manifest/intent-filter-element.html"],
+            "book": [],
+            "video": []
+          },
+          "Implicit Service Checking": {
+            "title": "To ensure your app is secure, always use an explicit intent when starting a Service and DO NOT declare intent filters for your services. Using an implicit intent to start a service is a security hazard because you cannot be certain what service will respond to the intent, and the user cannot see which service starts.",  
+            "category": "M1",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage","http://developer.android.com/guide/components/intents-filters.html"],
+            "book": [],
+            "video": []
+          },
+          "Android SQLite Databases Vulnerability Checking": {
+            "title": "This app is using Android SQLite databases. Prior to Android 4.0, Android has SQLite Journal Information Disclosure Vulnerability. But it can only be solved by users upgrading to Android > 4.0 and YOU CANNOT SOLVE IT BY YOURSELF (But you can use encrypt your databases and Journals by SQLCipher or other libs).", 
+            "category": "M2",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage"],
+            "book": [],
+            "video": []
+          },
+          "Android SQLite Databases Encryption (SQLCipher)": {
+            "title": "This app is using SQLCipher(http://sqlcipher.net/) to encrypt or decrpyt databases.",  
+            "category": "M2",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage","https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md"],
+            "book": ["https://www.owasp.org/images/5/56/OWASP_ChapterMeeting_SqlCipher-2012.pdf"],
+            "video": []
+          },
+          "Android SQLite Databases Encryption (SQLite Encryption Extension (SEE))": {
+            "title": "This app is using SQLite Encryption Extension (SEE) on Android (http://www.sqlite.org/android) to encrypt or decrpyt databases.",  
+            "category": "M2",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage","http://www.sqlite.org/android"],
+            "book": [],
+            "video": []
+          },
+          "Key for Android SQLite Databases Encryption": {
+            "title": "Found using the symmetric key(PRAGMA key) to encrypt the SQLite databases.",  
+            "category": "M2",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage"],
+            "book": [],
+            "video": []
+          },
+          "Executing root or System Privilege Checking": {
+            "title": "Executing root or System Privilege found"  ,
+            "category": "M8",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering"],
+            "book": [],
+            "video": []
+          },
+          "Getting IMEI and Device ID": {
+            "title": "This app has code getting the device id(IMEI) but there are problems with this TelephonyManager.getDeviceId() approach",  
+            "category": "M9",
+            "level": "Warning",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering","https://android-developers.googleblog.com/2011/03/identifying-app-installations.html"],
+            "book": [],
+            "video": []
+          },
+          "Getting ANDROID_ID": {
+            "title": "This app has code getting the 64-bit number Settings.Secure.ANDROID_ID. ANDROID_ID seems a good choice for a unique device identifier. There are downsides: First, it is not 100% reliable on releases of Android prior to 2.2 (Froyo). Also, there has been at least one widely-observed bug in a popular handset from a major manufacturer, where every instance has the same ANDROID_ID.",  
+            "category": "M9",
+            "level": "Warning",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M9-Reverse_Engineering","http://android-developers.blogspot.tw/2011/03/identifying-app-installations.html"],
+            "book": [],
+            "video": []
+          },
+          "Codes for Sending SMS": {
+            "title": "This app has code for sending SMS messages (sendDataMessage, sendMultipartTextMessage or sendTextMessage)",  
+            "category": "M10",
+            "level": "Warning",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M10-Extraneous_Functionality"],
+            "book": [],
+            "video": []
+          },
+          "AndroidManifest sharedUserId Checking": {
+            "title": "This app uses android.uid.system sharedUserId, which requires the system(uid=1000) permission. It must be signed with manufacturer's keystore or Google's keystore to be successfully installed on users' devices.",  
+            "category": "M1",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M1-Improper_Platform_Usage","https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05a-Platform-Overview.md"],
+            "book": [],
+            "video": []
+          },
+          "Rooting System with Master Key Vulnerability": {
+            "title": "This app is a malware, which requests system(uid=1000) privilege with Master Key vulnerability, leading the devices to be rooted.",  
+            "category": "M8",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering","https://github.com/OWASP/owasp-mstg/blob/master/Document/0x04h-Testing-Code-Quality.md"],
+            "book": [],
+            "video": []
+          },
+          "File Unsafe Delete Checking": {
+            "title": "Everything you delete may be recovered by any user or attacker, especially rooted devices. Please make sure do not use file.delete() to delete essential files.", 
+            "category": "M7",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M7-Poor_Code_Quality"],
+            "book": [],
+            "video": ["https://www.youtube.com/watch?v=tGw1fxUD-uY"]
+          },
+          "APK Installing Source Checking": {
+            "title": "This app has code checking APK installer sources(e.g. from Google Play, from Amazon, etc.). It might be used to check for whether the app is hacked by the attackers.",  
+            "category": "M8",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering"],
+            "book": [],
+            "video": []
+          },
+          "WebView Local File Access Attacks Checking": {
+            "title": "Found setAllowFileAccess(true) or not set(enabled by default) in WebView. The attackers could inject malicious script into WebView and exploit the opportunity to access local resources. This can be mitigated or prevented by disabling local file system access. (It is enabled by default). Note that this enables or disables file system access only. Assets and resources are still accessible using file:///android_asset and file:///android_res. The attackers can use mWebView.loadUrl(file:///data/data/[Your_Package_Name]/[File]); to access app's local file.",  
+            "category": "M8",
+            "level": "Warning",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M8-Code_Tampering","https://labs.mwrinfosecurity.com/blog/2012/04/23/adventures-with-android-webviews/","http://developer.android.com/reference/android/webkit/WebSettings.html"],
+            "book": [],
+            "video": []
+          },
+          "AndroidManifest Adb Backup Checking": {
+            "title": "ADB Backup is ENABLED for this app (default: ENABLED). ADB Backup is a good tool for backing up all of your files. If it's open for this app, people who have your phone can copy all of the sensitive data for this app in your phone (Prerequisite: 1.Unlock phone's screen 2.Open the developer mode). The sensitive data may include lifetime access token, username or password, etc. Security case related to ADB Backup", 
+            "category": "M2",
+            "level": "Notice",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M2-Insecure_Data_Storage","http://developer.android.com/guide/topics/manifest/application-element.html","http://blog.c22.cc/advisories/cve-2013-5112-evernote-android-insecure-storage-of-pin-data-bypass-of-pin-protection/","http://www.securityfocus.com/archive/1/530288/30/0/threaded"],
+            "book": [],
+            "video": []
+          },
+          "SSL Certificate Verification Checking": {
+            "title": "This is a critical vulnerability and allows attackers to do MITM attacks without your knowledge. If you are transmitting users username or password, these sensitive information may be leaking.",  
+            "category": "M3",
+            "level": "Warning",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M3-Insecure_Communication"],
+            "book": ["http://goo.gl/BFb65r"],
+            "video": []
+          },
+          "WebView RCE Vulnerability Checking": {
+            "title": "WebView RCE Vulnerability found"  ,
+            "CVE": "CVE-2013-4710",
+            "category": "M10",
+            "level": "Critical",
+            "link": ["https://www.owasp.org/index.php/Mobile_Top_10_2016-M10-Extraneous_Functionality","http://developer.android.com/reference/android/webkit/WebView.html","https://labs.mwrinfosecurity.com/blog/2013/09/24/webview-addjavascriptinterface-remote-code-execution/","http://blog.trustlook.com/2013/09/04/alert-android-webview-addjavascriptinterface-code-execution-vulnerability/"],
+            "book": [],
+            "video": []
+          }
+    }
