@@ -1,7 +1,7 @@
 <template>
   <div class="login centered">
     <div class="login-header">
-      <h1>appSentinel</h1>
+      <h1>DAAV</h1>
     </div>
     <div class="login-form">
       <span class="login-text">Username:</span>

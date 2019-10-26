@@ -56,6 +56,7 @@
         if (this.inline) {
           return `form-check-inline`
         }
+        return null;
       }
     },
     created() {

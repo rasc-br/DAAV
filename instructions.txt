@@ -11,6 +11,7 @@ https://dev.mysql.com/downloads/installer/
 
 Install requirement: PyMySQL
 pip install PyMySQL
+py -2 -m pip install pymysql
 (2x - using pip on Python 2 and 3)
 
 Install requirement: flasgger
@@ -19,12 +20,16 @@ pip install flasgger
 
 Install requirement: Python Requests Library
 pip install requests
+pip install cryptography
 
 Install requirement: Python tqdm
 pip install tqdm
 
 Install requirement: Python JWT Authentication
 pip install PyJWT
+
+Install Vue Cli
+npm install -g @vue/cli
 
 For Visual Studio Code:
 File » Preferences » Settings » Extensions » JSON » Edit settings.JSON
@@ -37,4 +42,5 @@ Install MySQL Server and create users (check config.ini)
 
 Change config.ini the pythoncmd for python2 and python3 of your machine (py -2 / py -3)
 
+For the first time, over webfeontend directory, open powershell and: npm i
 

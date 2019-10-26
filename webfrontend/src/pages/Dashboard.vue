@@ -7,8 +7,8 @@
           <template slot="header">
             <div class="row">
               <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-                <h5 class="card-category">App Severity Level</h5>
-                <h2 class="card-title">{{lastAppName}}</h2>
+                <h5 class="card-category">Total Apps Severity Level</h5>
+                <h2 class="card-title">{{title1}}</h2>
               </div>
               <div class="col-sm-6">
                 <div class="btn-group btn-group-toggle"
@@ -61,11 +61,11 @@
           </div>
         </card>
       </div> -->
-      <div class="col-lg-4" :class="{'text-right': isRTL}">
+      <div class="col-lg-6" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-            <h5 class="card-category">Total Apps Analysed</h5>
-            <h3 class="card-title"><i class="tim-icons icon-check-2 text-info "></i> {{appsAnalysedCounter}}</h3>
+            <h5 class="card-category">Last App Analysed</h5>
+            <h3 class="card-title">{{title2}}</h3>
           </template>
           <div class="chart-area">
             <bar-chart style="height: 100%"
@@ -78,11 +78,11 @@
           </div>
         </card>
       </div>
-      <!-- <div class="col-lg-4" :class="{'text-right': isRTL}">
+      <div class="col-lg-6" :class="{'text-right': isRTL}">
         <card type="chart">
           <template slot="header">
-            <h5 class="card-category">{{$t('dashboard.completedTasks')}}</h5>
-            <h3 class="card-title"><i class="tim-icons icon-send text-success "></i> 12,100K</h3>
+            <h5 class="card-category">Total Apps Analysed</h5>
+            <h3 class="card-title">{{title3}}</h3>
           </template>
           <div class="chart-area">
             <line-chart style="height: 100%"
@@ -93,7 +93,7 @@
             </line-chart>
           </div>
         </card>
-      </div> -->
+      </div>
     </div>
 
   </div>
@@ -102,24 +102,25 @@
   import LineChart from '@/components/Charts/LineChart';
   import BarChart from '@/components/Charts/BarChart';
   import * as chartConfigs from '@/components/Charts/config';
-  import TaskList from './Dashboard/TaskList';
-  import UserTable from './Dashboard/UserTable';
+  // import TaskList from './Dashboard/TaskList';
+  // import UserTable from './Dashboard/UserTable';
   import config from '@/config';
 
   export default {
     components: {
       LineChart,
       BarChart,
-      TaskList,
-      UserTable
+      // TaskList,
+      // UserTable
     },
     data() {
       return {
-        lastAppName: 'Last App Name Default',
-        appsAnalysedCounter: '1234 apps',
+        title1: 'Severity Level',
+        title2: 'Last App Name',
+        title3: '10,430 Apps Analysed',
         lineLastAppSeverity: {
           allData: [
-            [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
+            [100, 70, 90, 70, 105, 60, 75, 60, 90, 80, 110, 100],
             [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
             [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130]
           ],
@@ -199,7 +200,7 @@
         totalAppsBarChart: {
           extraOptions: chartConfigs.barChartOptions,
           chartData: {
-            labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
+            labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8'],
             datasets: [{
               label: "Countries",
               fill: true,
@@ -207,7 +208,7 @@
               borderWidth: 2,
               borderDash: [],
               borderDashOffset: 0.0,
-              data: [53, 20, 10, 80, 100, 45],
+              data: [53, 20, 10, 80, 100, 45, 10, 22],
             }]
           },
           gradientColors: config.colors.primaryGradient,
@@ -255,23 +256,23 @@
       initTotalAppsAnalysed() {
         // Get data information for this chart on API and result into allData as an array of numbers
 
-        let chartData = {
-          extraOptions: chartConfigs.barChartOptions,
-          chartData: {
-            labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8'],
-            datasets: [{
-              label: "Breaches",
-              fill: true,
-              borderColor: config.colors.info,
-              borderWidth: 2,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              data: [80, 120, 10, 6, 100, 73],
-            }]
-          },
-          gradientColors: config.colors.primaryGradient,
-          gradientStops: [1, 0.4, 0],
-        }
+        // let chartData = {
+        //   extraOptions: chartConfigs.barChartOptions,
+        //   chartData: {
+        //     labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8'],
+        //     datasets: [{
+        //       label: "Breaches",
+        //       fill: true,
+        //       borderColor: config.colors.info,
+        //       borderWidth: 2,
+        //       borderDash: [],
+        //       borderDashOffset: 0.0,
+        //       data: [80, 120, 10, 6, 100, 73],
+        //     }]
+        //   },
+        //   gradientColors: config.colors.primaryGradient,
+        //   gradientStops: [1, 0.4, 0],
+        // }
 
         // this.$refs.lastAppSeverity.updateGradients(chartData);
         // this.lineLastAppSeverity.chartData = chartData;

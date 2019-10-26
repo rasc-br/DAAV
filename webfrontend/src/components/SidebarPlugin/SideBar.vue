@@ -46,7 +46,7 @@
     props: {
       title: {
         type: String,
-        default: "appSentinel"
+        default: "DAAV"
       },
       backgroundColor: {
         type: String,
