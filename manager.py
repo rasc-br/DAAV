@@ -109,8 +109,10 @@ if __name__=="__main__":
                 # log.debug(config['GENERAL']['python3cmd'] + " scanner.py --md5 " + appMD5 + " --file " + dir + "/" + apkfile)
                 print("GO SCANNER (Python 2) »» "+config['GENERAL']['python2cmd'] + " scanner_py2plugins.py --md5 " + appMD5 + " --user " + username + " --file " + dir + "/" + apkfile)
                 os.system(config['GENERAL']['python2cmd'] + " scanner_py2plugins.py --md5 " + appMD5 + " --user " + username + " --file " + dir + "/" + apkfile)
-                # print("GO SCANNER (Python 3) »» "+config['GENERAL']['python3cmd'] + " scanner_py3plugins.py --md5 " + appMD5 + " --file " + dir + "/" + apkfile)
-                # os.system(config['GENERAL']['python3cmd'] + " scanner_py3plugins.py --md5 " + appMD5 + " --file " + dir + "/" + apkfile)               
+
+                print("GO SCANNER (Python 3) »» "+config['GENERAL']['python3cmd'] + " scanner_py3plugins.py --md5 " + appMD5 + " --user " + username + " --file " + dir + "/" + apkfile)
+                os.system(config['GENERAL']['python3cmd'] + " scanner_py3plugins.py --md5 " + appMD5 + " --user " + username + " --file " + dir + "/" + apkfile)
+
                 db.delete_apk2scan(apk[1])
                 print("\n")
                 print("Manager DONE!")

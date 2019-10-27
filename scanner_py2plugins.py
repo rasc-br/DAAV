@@ -83,8 +83,6 @@ def categorize():
                     pass
 
             print("\n "+result.plugin+" Categorized!")                     
-            # storeCategorized()
-
 
 '''
 A tool to scan APKs and look for vulnerabilities
