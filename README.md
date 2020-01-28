@@ -3,6 +3,7 @@
 This is my Master Degree's on Open Source Software prototype.
 I's a vulnerability analysis tool over Android applications that is available through a website, which differs from other tools with similar purpose, because it includes several vulnerabilities detection tools and creates a single normalized report to expose software vulnerabilities and categorize them for user interpretation, adding guides to solve those security flaws over each vulnerability.
 This solution is the result of a study over existent vulnerabilities detection tools, malicious software attack methods and software security flaws categorization to propose guides that could solve each of those vulnerabilities found.
+
 It started as a fork of AppSentinel and become something quite different.
 
 ## Still under development
